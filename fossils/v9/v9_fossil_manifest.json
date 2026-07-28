@@ -1,0 +1,13 @@
+{
+  "titan_version": "0.9.0",
+  "report": "TITAN-V9-RESULTS.md",
+  "source_commit": "65e468ee1080eadd06711eb9ef8c32e189a7a9d1",
+  "wheel_sha256": "24c02e63cf2163c64ef665cfae1acf39f796d37d774aa8fba000e9217751ef3b",
+  "protocol_hash": "237445d4a54f3ab8aae733836013a6dd065940eca5f110059d6f6d2a2a48dcb5",
+  "production_approved": false,
+  "artifacts": {
+    "fossils/v9/TITAN-V9-RESULTS.md": "11aa48dfe5acc1168c719d1bb5a418af6a9594380cef618de9b098188ad57745",
+    "fossils/v9/v9_locked_results.json": "3fb031e295173eb185d0385dda730102db67918ebf29fedc99e8bcddc93d83be",
+    "fossils/v9/v9_protocol_freeze.json": "3501a48ec2effca73e10be3f3f1ca3edd2530395d764064a2a7edc9fc0d55638"
+  }
+}
