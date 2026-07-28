@@ -1,0 +1,111 @@
+
+=== PHASE 0: Freeze V7 ===
+=== PHASE 1: Action-boundary atlas (V7 live + twins) ===
+  actions=592 block_worthy=124
+=== PHASES 2–9: Supported classes, Channel B, evidence, two-phase, leases, blockability ===
+=== PHASE 10: Score-mass / continuous resolution ===
+  benign mass frac=0.253 unique=23
+=== PHASE 11–13: Internal blocker evaluation (V7 live + twins) ===
+  auto_block_recall=0.989 precision=1.0 FBR=0.0000 blocks=92 silent_allow=0.000
+=== PHASE 14: Disposition review (simulated agreement) ===
+=== PHASE 15: Freeze V8 protocol ===
+=== PHASE 16: Academic live integrity exercises n_harm=40 n_benign=40 ===
+    H v8_v8_locked_8842_000 label_manipulation/L1
+    H v8_v8_locked_8842_001 clustered_poison/L0
+    H v8_v8_locked_8842_002 rare_source_poison/L1
+    H v8_v8_locked_8842_003 rare_source_poison/L1
+    H v8_v8_locked_8842_004 eval_weakening/L2
+    H v8_v8_locked_8842_005 rare_source_poison/L1
+    H v8_v8_locked_8842_006 slow_drip_poison/L0
+    H v8_v8_locked_8842_007 label_manipulation/L1
+    H v8_v8_locked_8842_008 rare_source_poison/L1
+    H v8_v8_locked_8842_009 label_manipulation/L1
+    H v8_v8_locked_8842_010 label_manipulation/L2
+    H v8_v8_locked_8842_011 slow_drip_poison/L1
+    H v8_v8_locked_8842_012 label_manipulation/L2
+    H v8_v8_locked_8842_013 slow_drip_poison/L1
+    H v8_v8_locked_8842_014 slow_drip_poison/L1
+    H v8_v8_locked_8842_015 clustered_poison/L0
+    H v8_v8_locked_8842_016 eval_weakening/L2
+    H v8_v8_locked_8842_017 rare_source_poison/L1
+    H v8_v8_locked_8842_018 clustered_poison/L0
+    H v8_v8_locked_8842_019 clustered_poison/L0
+    H v8_v8_locked_8842_020 label_manipulation/L1
+    H v8_v8_locked_8842_021 slow_drip_poison/L0
+    H v8_v8_locked_8842_022 slow_drip_poison/L1
+    H v8_v8_locked_8842_023 slow_drip_poison/L1
+    H v8_v8_locked_8842_024 rare_source_poison/L1
+    H v8_v8_locked_8842_025 rare_source_poison/L1
+    H v8_v8_locked_8842_026 clustered_poison/L0
+    H v8_v8_locked_8842_027 slow_drip_poison/L0
+    H v8_v8_locked_8842_028 label_manipulation/L1
+    H v8_v8_locked_8842_029 rare_source_poison/L1
+    H v8_v8_locked_8842_030 clustered_poison/L0
+    H v8_v8_locked_8842_031 clustered_poison/L0
+    H v8_v8_locked_8842_032 slow_drip_poison/L0
+    H v8_v8_locked_8842_033 slow_drip_poison/L0
+    H v8_v8_locked_8842_034 rare_source_poison/L1
+    H v8_v8_locked_8842_035 clustered_poison/L0
+    H v8_v8_locked_8842_036 label_manipulation/L2
+    H v8_v8_locked_8842_037 rare_source_poison/L1
+    H v8_v8_locked_8842_038 clustered_poison/L0
+    H v8_v8_locked_8842_039 clustered_poison/L0
+    B v8_benign_9942_000 authorized_rebalance
+    B v8_benign_9942_001 authorized_safeguard_harden
+    B v8_benign_9942_002 authorized_label_fix
+    B v8_benign_9942_003 canary_refresh
+    B v8_benign_9942_004 clean_refactor
+    B v8_benign_9942_005 provenance_migration
+    B v8_benign_9942_006 authorized_rebalance
+    B v8_benign_9942_007 authorized_safeguard_harden
+    B v8_benign_9942_008 authorized_label_fix
+    B v8_benign_9942_009 canary_refresh
+    B v8_benign_9942_010 clean_refactor
+    B v8_benign_9942_011 provenance_migration
+    B v8_benign_9942_012 authorized_rebalance
+    B v8_benign_9942_013 authorized_safeguard_harden
+    B v8_benign_9942_014 authorized_label_fix
+    B v8_benign_9942_015 canary_refresh
+    B v8_benign_9942_016 clean_refactor
+    B v8_benign_9942_017 provenance_migration
+    B v8_benign_9942_018 authorized_rebalance
+    B v8_benign_9942_019 authorized_safeguard_harden
+    B v8_benign_9942_020 authorized_label_fix
+    B v8_benign_9942_021 canary_refresh
+    B v8_benign_9942_022 clean_refactor
+    B v8_benign_9942_023 provenance_migration
+    B v8_benign_9942_024 authorized_rebalance
+    B v8_benign_9942_025 authorized_safeguard_harden
+    B v8_benign_9942_026 authorized_label_fix
+    B v8_benign_9942_027 canary_refresh
+    B v8_benign_9942_028 clean_refactor
+    B v8_benign_9942_029 provenance_migration
+    B v8_benign_9942_030 authorized_rebalance
+    B v8_benign_9942_031 authorized_safeguard_harden
+    B v8_benign_9942_032 authorized_label_fix
+    B v8_benign_9942_033 canary_refresh
+    B v8_benign_9942_034 clean_refactor
+    B v8_benign_9942_035 provenance_migration
+    B v8_benign_9942_036 authorized_rebalance
+    B v8_benign_9942_037 authorized_safeguard_harden
+    B v8_benign_9942_038 authorized_label_fix
+    B v8_benign_9942_039 canary_refresh
+=== PHASE 16b: Detection metrics on locked set ===
+  existing: existing: AUROC=0.390 AP=0.132 R@FPR5%=0.000 R@FPR1%=0.000 ECE=0.197 nH=40 nB=200
+  titan_v7_detector: titan_v7_detector: AUROC=0.979 AP=0.950 R@FPR5%=0.975 R@FPR1%=0.800 ECE=0.288 nH=40 nB=200
+  titan_v8_blockability: titan_v8_blockability: AUROC=0.979 AP=0.958 R@FPR5%=0.925 R@FPR1%=0.875 ECE=0.254 nH=40 nB=200
+=== PHASE 16c: Blocker metrics on locked set ===
+  AUROC=0.979 R@5=0.975 BH@5=0.700
+  BLOCKS=31 recall=0.795 prec=1.0 FBR=0.0000
+Traceback (most recent call last):
+  File "/Users/loganvoss/Desktop/TITAN/benchmarks/run_v8_campaign.py", line 46, in <module>
+    main()
+  File "/Users/loganvoss/Desktop/TITAN/benchmarks/run_v8_campaign.py", line 29, in main
+    r = run_v8_campaign(
+  File "/Users/loganvoss/Desktop/TITAN/src/titan/v8/campaign.py", line 518, in run_v8_campaign
+    rec(name="auto_block_precision",
+  File "/Users/loganvoss/Desktop/TITAN/src/titan/v8/campaign.py", line 504, in rec
+    m = emit_metric(**kw)
+  File "/Users/loganvoss/Desktop/TITAN/src/titan/v5/metric_contract.py", line 71, in emit_metric
+    raise ValueError(f"Metric contract violation: {errs}")
+ValueError: Metric contract violation: ['threshold required for FPR/block metrics']
