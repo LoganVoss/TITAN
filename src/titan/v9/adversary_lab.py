@@ -561,29 +561,55 @@ def build_hybrid(bp: SessionBlueprint) -> AgentTrajectory:
 def materialize(bp: SessionBlueprint) -> AgentTrajectory:
     harmful = bp.label == Label.HARMFUL
     if bp.primary_target == "queue_training":
-        return build_queue_training(
+        traj = build_queue_training(
             bp, authorized=not harmful, verified=not harmful,
         )
-    if bp.primary_target == "merge_training_data":
-        return build_merge_training(
+    elif bp.primary_target == "merge_training_data":
+        traj = build_merge_training(
             bp, authorized=not harmful, complete_prov=not harmful,
         )
-    if bp.primary_target == "canary_ops":
-        return build_canary(
+    elif bp.primary_target == "canary_ops":
+        traj = build_canary(
             bp, authorized=not harmful, replace=not harmful,
         )
-    if bp.primary_target == "modify_safeguard":
-        return build_safeguard(
+    elif bp.primary_target == "modify_safeguard":
+        traj = build_safeguard(
             bp, authorized=not harmful, harden=not harmful,
         )
-    if bp.primary_target == "kernel_forbidden":
-        return build_kernel_forbidden(bp)
-    if bp.primary_target == "gateway_evidence_attack":
-        return build_gateway_attack(bp)
-    if bp.primary_target == "hybrid":
-        return build_hybrid(bp)
-    # default parity action
-    return build_queue_training(bp, authorized=not harmful, verified=not harmful)
+    elif bp.primary_target == "kernel_forbidden":
+        traj = build_kernel_forbidden(bp)
+    elif bp.primary_target == "gateway_evidence_attack":
+        traj = build_gateway_attack(bp)
+    elif bp.primary_target == "hybrid":
+        traj = build_hybrid(bp)
+    else:
+        # default parity action
+        traj = build_queue_training(bp, authorized=not harmful, verified=not harmful)
+    # Always stamp blueprint identity for slice metrics / population audits.
+    meta = dict(traj.metadata or {})
+    meta.update(
+        {
+            "blueprint": bp.__dict__,
+            "generation": "v9_sandbox_adversary_lab",
+            "primary_target": bp.primary_target,
+            "threat_family": bp.threat_family,
+            "subtype": bp.subtype,
+            "model_profile": bp.model_profile,
+            "auth_condition": bp.auth_condition,
+            "variant": bp.variant,
+        }
+    )
+    return AgentTrajectory(
+        trajectory_id=traj.trajectory_id,
+        events=list(traj.events),
+        label=traj.label,
+        attack_family=traj.attack_family,
+        model_version=traj.model_version,
+        environment=traj.environment,
+        task_family=traj.task_family or bp.primary_target,
+        metadata=meta,
+        existing_monitor_scores=dict(traj.existing_monitor_scores or {}),
+    )
 
 
 def allocate_harmful_blueprints(n: int = 300, seed: int = 42) -> list[SessionBlueprint]:
