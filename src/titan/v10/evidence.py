@@ -74,6 +74,10 @@ class V10EvidenceView:
     def results(self) -> tuple[EvidenceResult, ...]:
         return self.bundle.results
 
+    @property
+    def evidence_hash(self) -> str:
+        return self.bundle.evidence_hash
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "bundle": self.bundle.to_dict(),

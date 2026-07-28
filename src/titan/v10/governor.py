@@ -145,6 +145,10 @@ class V10Governor:
     def _assert_configuration_integrity(self) -> str:
         return self.configuration_fingerprint
 
+    def verify_configuration(self) -> str:
+        """Gateway commit binding: return frozen fingerprint or raise."""
+        return self.configuration_fingerprint
+
     def _calibrate(
         self,
         calibrator: HierarchicalCalibrator | None,
