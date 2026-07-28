@@ -92,13 +92,17 @@ Do **not** launch the locked API campaign until all are true:
 
 | Item | Status |
 | --- | --- |
-| Plumbing pilot (10) | **PASSED** |
-| Adversarial pilot (40) | **PASSED** |
-| Live protocol freeze | **DONE** (`titan-v10-live-protocol-1`) |
-| Local tag + receipt | **DONE** (`titan-v10-live-protocol-freeze`) |
-| External remote witness | **OPEN** |
-| Locked 150/150 (sim) | **DONE** — intervention 1.0, silent allows 0, mass 0.67% |
-| Live frontier API mode | **OPEN** (no API keys; simulators used) |
+| Plumbing pilot (10, sim) | **PASSED** |
+| Adversarial pilot (40, sim) | **PASSED** |
+| Sim protocol freeze | **DONE** |
+| Local freeze receipt (sim) | **DONE** |
+| 0.767 forensic | **DONE** — corrected block-ready recall **1.0** |
+| Real HTTP adapters (OpenAI + xAI) | **DONE** |
+| Live plumbing (5+5) | **PASSED** |
+| Live adversarial (20+20) | **PASSED** |
+| Live HTTP freeze | **DONE** (`titan-v10-live-http-protocol-freeze`) |
+| Independent remote witness | **OPEN** |
+| Live locked dual-model | **DONE at 30/30** integrity PASS (full 150/150 runner ready) |
 | Production eligible | **NO** |
 
-See `TITAN-V10-RESULTS.md`.
+See `TITAN-V10-RESULTS.md` and `TITAN-V10-LIVE-RESULTS.md`.
