@@ -1,0 +1,12 @@
+{
+  "schema": "titan-v10-witness-receipt/1",
+  "protocol_hash": "7545728e41c9f1dafb5192acc65c34565b0bfd7e47a631a722d7bedb95656cc3",
+  "source_commit": "7b2100f1baf67cf39e1c2bf2b27643a316320136",
+  "wheel_sha256": "ab1adf8c8a9cdc2268ed81c80551263f54c7b8bf0ee66ad24151a6c95814f3a2",
+  "tag": "titan-v10-live-protocol-freeze",
+  "witnessed_at": "2026-07-28T20:50:15Z",
+  "witness_kind": "local_signed_git_tag_plus_file_receipt",
+  "external_remote_push": false,
+  "note": "Independent external remote witness still required for production eligibility. This receipt binds protocol/commit/wheel under a local annotated tag.",
+  "receipt_hash": "61debfe5dadf537a2f4979a2d72b42929ea1af6c1bfc7c9a29326bae89bf0073"
+}

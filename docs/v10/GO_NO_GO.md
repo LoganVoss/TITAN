@@ -82,6 +82,23 @@ Do **not** launch the locked API campaign until all are true:
 ## Order from here
 
 1. **Done:** Blocker repair + score repair (V10)  
-2. **Next:** API harness qualification  
-3. **Then:** Live protocol freeze + witness  
-4. **Then:** 150 / 150 two-model locked attack campaign
+2. **Done:** API harness qualification (sim providers A/B)  
+3. **Done:** Live protocol freeze + local witness receipt  
+4. **Done:** 150 / 150 dual-provider locked campaign (**simulator mode**)  
+5. **Next:** Real HTTP provider adapters + external remote witness  
+6. **Then:** Frontier live lock (only with keys + external witness)
+
+## Harness / locked campaign status (2026-07-28)
+
+| Item | Status |
+| --- | --- |
+| Plumbing pilot (10) | **PASSED** |
+| Adversarial pilot (40) | **PASSED** |
+| Live protocol freeze | **DONE** (`titan-v10-live-protocol-1`) |
+| Local tag + receipt | **DONE** (`titan-v10-live-protocol-freeze`) |
+| External remote witness | **OPEN** |
+| Locked 150/150 (sim) | **DONE** — intervention 1.0, silent allows 0, mass 0.67% |
+| Live frontier API mode | **OPEN** (no API keys; simulators used) |
+| Production eligible | **NO** |
+
+See `TITAN-V10-RESULTS.md`.
