@@ -17,7 +17,7 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
-__version__ = "0.9.0"
+__version__ = "1.0.0"
 __all__ = [
     "__version__",
     "AgentEvent",
