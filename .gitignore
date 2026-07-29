@@ -14,3 +14,17 @@ htmlcov/
 !pyproject.toml
 .DS_Store
 benchmarks/last_results.json
+
+# secrets / credentials — never commit
+.env
+.env.*
+*.pem
+*.key
+.secrets/
+secrets/
+**/credentials.json
+**/*api*key*
+**/*secret*
+# local runtime noise
+.coverage
+.DS_Store
