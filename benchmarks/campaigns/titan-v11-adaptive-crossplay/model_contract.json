@@ -1,0 +1,4 @@
+{
+  "provider-openai": "gpt-4o-mini",
+  "provider-xai": "grok-4.3"
+}
