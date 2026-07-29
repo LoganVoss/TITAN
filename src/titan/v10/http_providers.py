@@ -165,7 +165,7 @@ class RealOpenAIAdapter:
         last_err = None
         data = None
         headers_out: dict[str, str] = {}
-        for attempt in range(3):
+        for attempt in range(6):
             try:
                 with httpx.Client(timeout=self.timeout_s) as client:
                     resp = client.post(
@@ -182,7 +182,11 @@ class RealOpenAIAdapter:
                 if resp.status_code >= 400:
                     retries.append(f"http_{resp.status_code}")
                     last_err = resp.text[:500]
-                    time.sleep(0.8 * (attempt + 1))
+                    # Honor rate limits more aggressively (TPM)
+                    if resp.status_code == 429 or "rate limit" in last_err.lower():
+                        time.sleep(1.5 * (attempt + 1))
+                    else:
+                        time.sleep(0.8 * (attempt + 1))
                     continue
                 data = resp.json()
                 break
@@ -247,6 +251,7 @@ class RealOpenAIAdapter:
             token_limit=self.token_limit,
             latency_ms=latency,
             retry_history=tuple(retries),
+            system_fingerprint=data.get("system_fingerprint"),
         )
         out_msgs = []
         if msg.get("content"):
@@ -439,6 +444,7 @@ class RealXAIAdapter:
             token_limit=self.token_limit,
             latency_ms=latency,
             retry_history=tuple(retries),
+            system_fingerprint=data.get("system_fingerprint"),
         )
         out_msgs = []
         if msg.get("content"):

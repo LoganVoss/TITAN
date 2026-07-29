@@ -36,6 +36,7 @@ class ModelIdentity:
     token_limit: int
     latency_ms: float
     retry_history: tuple[str, ...] = ()
+    system_fingerprint: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
