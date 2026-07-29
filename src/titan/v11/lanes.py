@@ -287,6 +287,16 @@ def build_adaptive_lane(
         "escrow_probe_then_pivot",
         "safeguard_threshold_creep",
         "conflicting_evidence_flood",
+        "authorization_ambiguity_scope_creep",
+        "evidence_suppression_partial_attestation",
+        "repeated_escrow_then_alias_tool",
+        "indirect_pipeline_via_refresh_alias",
+        "split_merge_across_shards",
+        "conflicting_independent_attestations",
+        "stale_evidence_then_fresh_object",
+        "benign_maintenance_cover_canary_weaken",
+        "parallel_prepare_race",
+        "tool_reorder_train_after_read",
     ]
     ids = []
     for i in range(n):

@@ -90,13 +90,18 @@ def main() -> None:
     if r.returncode != 0:
         sys.exit("tests failed — freeze aborted")
 
-    # ---- 3: clean commit of V11 source ----
+    # ---- 3: clean commit of V11 source (+ eval-cell strip in HTTP adapters) ----
     print("=== COMMIT V11 SOURCE ===", flush=True)
-    subprocess.check_call(["git", "add", "src/titan/v11", "benchmarks/run_v11_campaign.py"], cwd=root)
+    v11_paths = [
+        "src/titan/v11",
+        "src/titan/v10/http_providers.py",
+        "benchmarks/run_v11_campaign.py",
+    ]
+    subprocess.check_call(["git", "add", *v11_paths], cwd=root)
     # may have nothing new if already committed
     st = subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True)
     if st.strip():
-        subprocess.check_call(["git", "add", "-A", "src/titan/v11", "benchmarks/run_v11_campaign.py", "docs"], cwd=root)
+        subprocess.check_call(["git", "add", "-A", *v11_paths, "docs"], cwd=root)
         # secret scan staged — look for long key-shaped tokens, not short prefixes
         import re
         diff = subprocess.check_output(["git", "diff", "--cached"], cwd=root, text=True, errors="ignore")
@@ -109,7 +114,7 @@ def main() -> None:
                 "git",
                 "commit",
                 "-m",
-                "TITAN V11 adaptive cross-play: witness gate + server-side eval cells",
+                "TITAN V11: witness gate, server-side eval cells, adaptive multi-turn",
             ],
             cwd=root,
         )
@@ -221,11 +226,24 @@ def main() -> None:
     # ---- 8: annotated tag ----
     tag = freeze_meta["tag"]
     print("=== TAG + PUSH ===", flush=True)
-    # commit freeze artifacts (no keys)
-    subprocess.check_call(["git", "add", str(out / "protocol.json"), str(out / "generator_contract.json"), str(out / "model_contract.json"), str(out / "freeze_meta.json"), "src/titan/v11", "benchmarks/run_v11_campaign.py"], cwd=root)
-    # scan
+    # commit freeze artifacts (no keys). -f: campaign *.json is gitignored by design
+    freeze_files = [
+        out / "protocol.json",
+        out / "generator_contract.json",
+        out / "model_contract.json",
+        out / "freeze_meta.json",
+    ]
+    subprocess.check_call(
+        ["git", "add", "-f", *[str(p) for p in freeze_files], "src/titan/v11", "benchmarks/run_v11_campaign.py"],
+        cwd=root,
+    )
+    # scan staged material for key-shaped tokens (never commit secrets)
+    import re as _re
+
     diff = subprocess.check_output(["git", "diff", "--cached"], cwd=root, errors="ignore")
-    if b"sk-proj-" in diff or b"xai-B8oynb" in diff or b"xai-OjNfd" in diff:
+    if _re.search(rb"sk-proj-[A-Za-z0-9_-]{20,}", diff) or _re.search(
+        rb"xai-[A-Za-z0-9]{40,}", diff
+    ):
         sys.exit("REFUSING: secrets in staged freeze artifacts")
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip():
         subprocess.call(
@@ -242,7 +260,10 @@ def main() -> None:
     freeze_meta["protocol_sha256"] = protocol_sha
     proto_path.write_text(json.dumps(protocol, indent=2, sort_keys=True))
     (out / "freeze_meta.json").write_text(json.dumps(freeze_meta, indent=2))
-    subprocess.check_call(["git", "add", str(proto_path), str(out / "freeze_meta.json")], cwd=root)
+    subprocess.check_call(
+        ["git", "add", "-f", str(proto_path), str(out / "freeze_meta.json")],
+        cwd=root,
+    )
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip():
         subprocess.call(["git", "commit", "-m", f"Seal {args.campaign_id} protocol hash"], cwd=root)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()

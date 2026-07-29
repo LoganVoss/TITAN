@@ -123,35 +123,102 @@ def verify_receipt(receipt: dict[str, Any], *, expected: dict[str, str]) -> None
         raise WitnessError(f"invalid witness signature: {exc}") from exc
 
 
+def _find_gh() -> str | None:
+    for candidate in (
+        "gh",
+        "/opt/homebrew/bin/gh",
+        "/usr/local/bin/gh",
+        str(Path.home() / "bin" / "gh"),
+        str(Path.home() / ".local" / "bin" / "gh"),
+    ):
+        try:
+            subprocess.check_output([candidate, "--version"], stderr=subprocess.DEVNULL)
+            return candidate
+        except Exception:
+            continue
+    return None
+
+
 def fetch_remote_refs(repo: str, tag: str) -> dict[str, str]:
-    """Retrieve commit/tag SHAs from GitHub (remote), not from local-only state."""
-    # Prefer gh api (authenticated private repos)
-    try:
-        tag_json = subprocess.check_output(
-            ["gh", "api", f"repos/{repo}/git/ref/tags/{tag}"],
-            text=True,
-        )
-        ref = json.loads(tag_json)
-        obj = ref["object"]
-        if obj["type"] == "tag":
-            tag_obj = json.loads(
-                subprocess.check_output(
-                    ["gh", "api", f"repos/{repo}/git/tags/{obj['sha']}"],
-                    text=True,
-                )
+    """Retrieve commit/tag SHAs from GitHub (remote), not from local-only state.
+
+    Preference order:
+      1. gh api (authenticated private repos)
+      2. git ls-remote origin (uses configured credentials / keychain)
+    """
+    errors: list[str] = []
+    gh = _find_gh()
+    if gh:
+        try:
+            tag_json = subprocess.check_output(
+                [gh, "api", f"repos/{repo}/git/ref/tags/{tag}"],
+                text=True,
             )
+            ref = json.loads(tag_json)
+            obj = ref["object"]
+            if obj["type"] == "tag":
+                tag_obj = json.loads(
+                    subprocess.check_output(
+                        [gh, "api", f"repos/{repo}/git/tags/{obj['sha']}"],
+                        text=True,
+                    )
+                )
+                return {
+                    "tag_object_sha": obj["sha"],
+                    "commit_sha": tag_obj["object"]["sha"],
+                    "remote_url": f"https://github.com/{repo}",
+                }
             return {
                 "tag_object_sha": obj["sha"],
-                "commit_sha": tag_obj["object"]["sha"],
+                "commit_sha": obj["sha"],
                 "remote_url": f"https://github.com/{repo}",
             }
+        except Exception as exc:
+            errors.append(f"gh:{exc}")
+
+    # Fallback: git ls-remote against configured origin (private-repo friendly)
+    try:
+        # Ensure we query the live remote, not a stale cache
+        remote_url = (
+            subprocess.check_output(
+                ["git", "config", "--get", "remote.origin.url"],
+                text=True,
+            ).strip()
+            or f"https://github.com/{repo}.git"
+        )
+        lines = subprocess.check_output(
+            ["git", "ls-remote", "origin", f"refs/tags/{tag}", f"refs/tags/{tag}^{{}}"],
+            text=True,
+        ).strip().splitlines()
+        # Annotated tags: two lines — tag object and peeled commit (^{})
+        tag_object_sha = ""
+        commit_sha = ""
+        for line in lines:
+            parts = line.split()
+            if len(parts) < 2:
+                continue
+            sha, ref = parts[0], parts[1]
+            if ref.endswith("^{}"):
+                commit_sha = sha
+            elif ref == f"refs/tags/{tag}":
+                tag_object_sha = sha
+        if not tag_object_sha and not commit_sha:
+            raise WitnessError(f"tag {tag!r} not present on origin")
+        if not commit_sha:
+            # Lightweight tag: object is the commit
+            commit_sha = tag_object_sha
+        if not tag_object_sha:
+            tag_object_sha = commit_sha
         return {
-            "tag_object_sha": obj["sha"],
-            "commit_sha": obj["sha"],
-            "remote_url": f"https://github.com/{repo}",
+            "tag_object_sha": tag_object_sha,
+            "commit_sha": commit_sha,
+            "remote_url": remote_url.replace(".git", "") if remote_url.endswith(".git") else remote_url,
         }
     except Exception as exc:
-        raise WitnessError(f"failed to retrieve tag from GitHub: {exc}") from exc
+        errors.append(f"git-ls-remote:{exc}")
+        raise WitnessError(
+            "failed to retrieve tag from GitHub remote: " + "; ".join(errors)
+        ) from exc
 
 
 def create_receipt_from_remote(
