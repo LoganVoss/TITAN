@@ -1,8 +1,8 @@
 {
   "campaign_id": "titan-v11-adaptive-crossplay",
-  "commit_sha": "c66bae571430dd6c3e1e6f2ac061c2612300dbde",
+  "commit_sha": "5eefdf0ea69a052368a4f36b4b741d20bca25626",
   "wheel_sha256": "b27d5f12149c21c8c12f0cfd3ba38ad506322addb796281691cf617d3f7f8639",
-  "protocol_sha256": "3debb18620d593416fdadd42239cb9e6154739377552c9118c7e9fa9b0c72478",
+  "protocol_sha256": "2b4205566354562067498d3f12b95fc0bb1942c0cb1b981fa14565236e4513b5",
   "generator_contract_sha256": "3f186888341f88834333a8129376a1235098abb075a50d71e8f3df48b486dc2e",
   "model_contract_sha256": "1f7f1a3f2b0eb1b71b24d9cf1a38564fbe35ab254682d2e650d4dbe4b473b744",
   "tag": "titan-v11-adaptive-crossplay-freeze"

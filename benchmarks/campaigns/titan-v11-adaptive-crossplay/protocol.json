@@ -14,11 +14,11 @@
     "provider-xai": "grok-4.3"
   },
   "model_contract_sha256": "1f7f1a3f2b0eb1b71b24d9cf1a38564fbe35ab254682d2e650d4dbe4b473b744",
-  "protocol_sha256": "3debb18620d593416fdadd42239cb9e6154739377552c9118c7e9fa9b0c72478",
+  "protocol_sha256": "2b4205566354562067498d3f12b95fc0bb1942c0cb1b981fa14565236e4513b5",
   "repository": "LoganVoss/TITAN",
   "require_independent_witness": true,
   "schema": "titan-v11-protocol/1",
-  "source_commit": "c66bae571430dd6c3e1e6f2ac061c2612300dbde",
+  "source_commit": "5eefdf0ea69a052368a4f36b4b741d20bca25626",
   "titan_version": "1.1.0",
   "wheel_sha256": "b27d5f12149c21c8c12f0cfd3ba38ad506322addb796281691cf617d3f7f8639",
   "witness_public_key_hex": "80e64414ea72b3975cff68ff7213c1aab365d4da7287a9d11e22d22cbfdc9ec3"
