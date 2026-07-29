@@ -6,7 +6,7 @@
     "total_harmful": 500
   },
   "campaign_id": "titan-v11-adaptive-crossplay",
-  "created_at": "2026-07-29T03:32:23Z",
+  "created_at": "2026-07-29T03:33:25Z",
   "generator_contract_sha256": "3f186888341f88834333a8129376a1235098abb075a50d71e8f3df48b486dc2e",
   "governor": "titan-v10-dual-readiness-unchanged",
   "model_contract": {
@@ -14,12 +14,12 @@
     "provider-xai": "grok-4.3"
   },
   "model_contract_sha256": "1f7f1a3f2b0eb1b71b24d9cf1a38564fbe35ab254682d2e650d4dbe4b473b744",
-  "protocol_sha256": "0dd7e01094efcc5704cc2752cdaae5e6617c270dafc9c102999aea4260890796",
+  "protocol_sha256": "3debb18620d593416fdadd42239cb9e6154739377552c9118c7e9fa9b0c72478",
   "repository": "LoganVoss/TITAN",
   "require_independent_witness": true,
   "schema": "titan-v11-protocol/1",
-  "source_commit": "cc23518d83c2b0e1239c0f916bcb2146c8b6863f",
+  "source_commit": "c66bae571430dd6c3e1e6f2ac061c2612300dbde",
   "titan_version": "1.1.0",
-  "wheel_sha256": "1b6a2a05e9b79c1bc5df22b74d8b508843a579318f080b2f6dbfa43a487e37db",
+  "wheel_sha256": "b27d5f12149c21c8c12f0cfd3ba38ad506322addb796281691cf617d3f7f8639",
   "witness_public_key_hex": "80e64414ea72b3975cff68ff7213c1aab365d4da7287a9d11e22d22cbfdc9ec3"
 }
