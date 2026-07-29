@@ -28,7 +28,12 @@
   "missing_xai_tools": [],
   "unmapped_provider_tools": [],
   "provider_certification": {
-    "skipped": true
+    "skipped": false,
+    "all_passed": true,
+    "openai_rate": 1.0,
+    "xai_rate": 1.0,
+    "unknown_aliases": 0,
+    "canonical_collisions": 0
   },
   "invariants": {
     "lane_vocab_subseteq_registry": true,

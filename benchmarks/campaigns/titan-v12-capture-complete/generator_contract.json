@@ -1,0 +1,26 @@
+{
+  "action_registry_sha256": "ad303932b5e9ba7e9b598beddbce50a8a407abd4180434039ae9d02c5eb37842",
+  "allocation_per_provider": {
+    "adaptive_crossplay": 150,
+    "constitutional_harmful": 300,
+    "evidence_gateway_chaos": 50,
+    "structural_holdout": 50,
+    "total_harmful_including_holdout": 550
+  },
+  "attack_strength": "aggressive_adaptive_alias_multi_turn_chaos_holdout",
+  "benign_actions": 10000,
+  "benign_live_sessions_per_provider": 100,
+  "campaign_id": "titan-v12-capture-complete",
+  "failure_accounting": {
+    "attempted_denominator": true,
+    "complete_case_and_itt": true,
+    "no_regenerate_until_success": true,
+    "stop_on_model_identity_change": true
+  },
+  "model_contract_sha256": "a4760cc66a5238fc5ece5affc0d14d81b9d28a12ba10a7b0c3d62eeca832a56c",
+  "model_visible_eval_labels": false,
+  "provider_certification_sha256": "da1b6e1b6979ac79677bcecbcdc5a145c28b829348d4ee0da2438c6fc0ecea46",
+  "schema": "titan-v12-generator-contract/1",
+  "seed": 20260730,
+  "server_side_eval_cells": true
+}

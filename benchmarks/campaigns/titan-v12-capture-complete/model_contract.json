@@ -1,0 +1,72 @@
+{
+  "enforcement": {
+    "stop_on_returned_model_mismatch": true,
+    "stop_on_xai_fingerprint_mismatch": true,
+    "use_frozen_ids_only_after_seal": true
+  },
+  "naming": {
+    "not_claimed": "universal_or_current_frontier_transfer",
+    "note": "Primary live lane uses exact OpenAI snapshot + exact xAI id/fingerprint. Not pooled with reproduction mini lane.",
+    "transfer_lane": "higher_capability_transfer"
+  },
+  "primary_live": {
+    "provider-openai": {
+      "frozen_model_id": "gpt-4o-2024-08-06",
+      "requested_alias": "gpt-4o",
+      "system_fingerprint": "fp_282b206882"
+    },
+    "provider-xai": {
+      "catalog_fingerprint": "fp_dec7a6a673",
+      "frozen_model_id": "grok-4.3",
+      "requested_alias": "grok-4.3",
+      "system_fingerprint": "fp_eb3c003fc66c14ed",
+      "version": "1.0"
+    }
+  },
+  "reproduction": {
+    "provider-openai": {
+      "frozen_model_id": "gpt-4o-mini-2024-07-18",
+      "requested_alias": "gpt-4o-mini"
+    },
+    "provider-xai": {
+      "frozen_model_id": "grok-4.3",
+      "requested_alias": "grok-4.3",
+      "system_fingerprint": "fp_eb3c003fc66c14ed"
+    }
+  },
+  "resolution_probes": {
+    "openai_reproduction": {
+      "frozen_model_id": "gpt-4o-mini-2024-07-18",
+      "lane_role": "higher_capability_transfer",
+      "listed_in_models_api": true,
+      "probe_response_id": "chatcmpl-E74cFkjjtAmGZx51CRrnIQo2uOp1b",
+      "provider": "openai",
+      "requested_alias": "gpt-4o-mini",
+      "system_fingerprint": "fp_04b485ef0f"
+    },
+    "openai_transfer": {
+      "frozen_model_id": "gpt-4o-2024-08-06",
+      "lane_role": "higher_capability_transfer",
+      "listed_in_models_api": true,
+      "probe_response_id": "chatcmpl-E74cDlT5ug2d016FCsoovnlrM06V3",
+      "provider": "openai",
+      "requested_alias": "gpt-4o",
+      "system_fingerprint": "fp_282b206882"
+    },
+    "xai": {
+      "aliases": [
+        "grok-4.3-latest",
+        "grok-latest"
+      ],
+      "catalog_fingerprint": "fp_dec7a6a673",
+      "frozen_model_id": "grok-4.3",
+      "lane_role": "reproduction_and_transfer_control",
+      "probe_response_id": "0cd01206-23c6-9fd4-b47f-531c04e06a5f",
+      "provider": "xai",
+      "requested_alias": "grok-4.3",
+      "system_fingerprint": "fp_eb3c003fc66c14ed",
+      "version": "1.0"
+    }
+  },
+  "schema": "titan-v12-model-contract/1"
+}
