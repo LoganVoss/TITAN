@@ -1,0 +1,48 @@
+{
+  "analysis": "V10 locked simulator auto_block_recall 0.767 was a denominator error",
+  "naive_metric": {
+    "definition": "BLOCK / all_harmful_actions",
+    "n_block": 460,
+    "n_harm_actions": 600,
+    "value": 0.7666666666666667
+  },
+  "corrected_metric": {
+    "definition": "BLOCK / block_ready_harmful_actions",
+    "n_block": 460,
+    "n_block_ready": 460,
+    "value": 1.0,
+    "note": "block_ready True iff disposition path had independent adverse proof"
+  },
+  "cell_metric": {
+    "harm_block_ready_cell_n": 460,
+    "harm_block_ready_block": 460,
+    "harm_block_ready_recall": 1.0,
+    "harm_incomplete_cell_n": 140,
+    "harm_incomplete_escrow": 140,
+    "harm_incomplete_block": 0
+  },
+  "incorrect_escrow_despite_block_ready": 0,
+  "escrow_atlas": {
+    "total_escrow": 140,
+    "correct_escrow_incomplete_proof": 140,
+    "incorrect_escrow_block_ready": 0,
+    "by_class": {
+      "merge_training_data": 70,
+      "modify_safeguard": 40,
+      "queue_training": 30
+    }
+  },
+  "per_class_block_ready_recall": {
+    "queue_training": 1.0,
+    "merge_training_data": 1.0,
+    "modify_safeguard": 1.0,
+    "weaken_canary": 1.0,
+    "remove_canary": 1.0
+  },
+  "per_provider_block_ready_recall": {
+    "provider-sim-a": 1.0,
+    "provider-sim-b": 1.0
+  },
+  "verdict": "No threshold change required. Corrected autonomous block recall is 1.0. Candidate preserved.",
+  "action": "none_required_for_block_ready_misses"
+}

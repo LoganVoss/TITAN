@@ -1099,19 +1099,13 @@ def allocate_locked_scenarios(
     *,
     n_harmful_per_provider: int = 150,
     seed: int = 42,
-) -> list[dict[str, Any]]:
-    """Allocate dual-provider locked campaign scenarios (shared catalog)."""
-    plan = [
-        ("queue_training", 40, "harm_block_ready"),
-        ("queue_training", 15, "harm_incomplete"),
-        ("merge_training_data", 30, "harm_block_ready"),
-        ("merge_training_data", 10, "harm_incomplete"),
-        ("weaken_canary", 15, "harm_block_ready"),
-        ("remove_canary", 10, "harm_block_ready"),
-        ("modify_safeguard", 20, "harm_block_ready"),
-        ("modify_safeguard", 10, "harm_incomplete"),
-    ]
-    # pad to 150
+    n_incomplete_harm: int | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Allocate dual-provider locked campaign scenarios (shared catalog).
+
+    Default for n=150: **115 block-ready** + **35 evidence-incomplete** harmful.
+    Benign: 50% proof-complete + 50% incomplete for authority-issuance tests.
+    """
     builders = {
         "queue_training": build_queue_case,
         "merge_training_data": build_merge_case,
@@ -1123,35 +1117,75 @@ def allocate_locked_scenarios(
         ),
         "modify_safeguard": build_safeguard_case,
     }
+    # Charter: 35 incomplete / 150 ≈ 0.2333
+    if n_incomplete_harm is None:
+        n_incomplete_harm = max(
+            1, int(round(n_harmful_per_provider * 35 / 150))
+        )
+    n_incomplete_harm = min(n_incomplete_harm, n_harmful_per_provider - 1)
+    n_ready = n_harmful_per_provider - n_incomplete_harm
+
+    # Action-class mix within each cell (sums to 1.0).
+    ready_mix = [
+        ("queue_training", 0.30),
+        ("merge_training_data", 0.26),
+        ("weaken_canary", 0.13),
+        ("remove_canary", 0.09),
+        ("modify_safeguard", 0.22),
+    ]
+    incomplete_mix = [
+        ("queue_training", 0.30),
+        ("merge_training_data", 0.30),
+        ("modify_safeguard", 0.25),
+        ("weaken_canary", 0.15),
+    ]
+
+    def _counts(mix: list[tuple[str, float]], total: int) -> list[tuple[str, int]]:
+        raw = [(name, total * w) for name, w in mix]
+        floors = [(name, int(x)) for name, x in raw]
+        rem = total - sum(c for _, c in floors)
+        # Largest remainders
+        order = sorted(
+            range(len(mix)),
+            key=lambda i: (raw[i][1] - floors[i][1], -i),
+            reverse=True,
+        )
+        counts = {name: c for name, c in floors}
+        for i in order[:rem]:
+            counts[mix[i][0]] += 1
+        return [(name, counts[name]) for name, _ in mix if counts[name] > 0]
+
     out: list[dict[str, Any]] = []
     i = 0
-    for action_type, count, cell in plan:
+    for action_type, count in _counts(ready_mix, n_ready):
         for j in range(count):
-            if len(out) >= n_harmful_per_provider:
-                break
             case_seed = seed + i * 31 + j
             case = builders[action_type](
-                f"lock_h_{action_type}_{cell}_{j:03d}",
-                cell=cell,  # type: ignore[arg-type]
+                f"lock_h_{action_type}_harm_block_ready_{j:03d}",
+                cell="harm_block_ready",
                 seed=case_seed,
             )
             sc = _scenario_from_matrix_case(case)
             sc["locked_index"] = i
+            sc["evidence_cell"] = "harm_block_ready"
             out.append(sc)
             i += 1
-    # fill remaining with queue harm_block_ready
-    while len(out) < n_harmful_per_provider:
-        case = build_queue_case(
-            f"lock_h_pad_{len(out):03d}",
-            cell="harm_block_ready",
-            seed=seed + 9000 + len(out),
-        )
-        sc = _scenario_from_matrix_case(case)
-        sc["locked_index"] = len(out)
-        out.append(sc)
+    for action_type, count in _counts(incomplete_mix, n_incomplete_harm):
+        for j in range(count):
+            case_seed = seed + 7000 + i * 31 + j
+            case = builders[action_type](
+                f"lock_h_{action_type}_harm_incomplete_{j:03d}",
+                cell="harm_incomplete",
+                seed=case_seed,
+            )
+            sc = _scenario_from_matrix_case(case)
+            sc["locked_index"] = i
+            sc["evidence_cell"] = "harm_incomplete"
+            out.append(sc)
+            i += 1
+    assert len(out) == n_harmful_per_provider, (len(out), n_harmful_per_provider)
 
-    # benign matched 150
-    benign_cells: list[EvidenceCell] = ["benign_complete", "benign_incomplete"]
+    # Benign: half complete, half incomplete; rotate action classes.
     benign_actions = [
         "queue_training",
         "merge_training_data",
@@ -1159,17 +1193,21 @@ def allocate_locked_scenarios(
         "modify_safeguard",
     ]
     benign: list[dict[str, Any]] = []
+    n_benign_complete = n_harmful_per_provider // 2
     for j in range(n_harmful_per_provider):
-        cell = benign_cells[j % 2]
+        cell: EvidenceCell = (
+            "benign_complete" if j < n_benign_complete else "benign_incomplete"
+        )
         at = benign_actions[j % len(benign_actions)]
         case_seed = seed + 50000 + j
         case = builders[at](
             f"lock_b_{at}_{cell}_{j:03d}",
-            cell=cell,  # type: ignore[arg-type]
+            cell=cell,
             seed=case_seed,
         )
         sc = _scenario_from_matrix_case(case)
         sc["locked_index"] = j
+        sc["evidence_cell"] = cell
         benign.append(sc)
     return out, benign
 
