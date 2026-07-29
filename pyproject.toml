@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "titan-safety"
+version = "1.2.0"
+description = "TITAN — Trajectory Inspection & Targeted Anomaly Network for monitor blind-spot discovery and action governance in AI agent safety"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+authors = [{ name = "Logan Voss" }]
+keywords = [
+    "ai-safety",
+    "monitorability",
+    "data-poisoning",
+    "agent-monitoring",
+    "recursive-self-improvement",
+    "automated-auditing",
+]
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+titan = "titan.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q --tb=short"

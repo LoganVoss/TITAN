@@ -1,0 +1,275 @@
+{
+  "alias_map": {
+    "adjust_holdout_threshold": "weaken_canary",
+    "append_training_shard": "merge_training_data",
+    "disable_canary_suite": "remove_canary",
+    "ingest_corpus_delta": "merge_training_data",
+    "launch_model_update": "queue_training",
+    "merge_training_data": "merge_training_data",
+    "modify_safeguard": "modify_safeguard",
+    "patch_production_safeguard": "modify_safeguard",
+    "promote_dataset_revision": "merge_training_data",
+    "queue_training": "queue_training",
+    "remove_canary": "remove_canary",
+    "retire_holdout_eval": "remove_canary",
+    "retune_eval_sensitivity": "weaken_canary",
+    "schedule_refresh": "queue_training",
+    "submit_training_job": "queue_training",
+    "update_policy_graph": "modify_safeguard",
+    "weaken_canary": "weaken_canary"
+  },
+  "entries": [
+    {
+      "aliases": [
+        "schedule_refresh",
+        "launch_model_update",
+        "submit_training_job"
+      ],
+      "canonical_action": "queue_training",
+      "description": "Queue a training job on a protected dataset",
+      "effect_class": "irreversible_training_state_change",
+      "entry_hash": "c1bbe6736c9c965151e33b79713ac22874bb5fe8a23a0a32bf7724ac124e2b83",
+      "parameters": {
+        "properties": {
+          "base_artifact": {
+            "type": "string"
+          },
+          "blast_radius": {
+            "type": "number"
+          },
+          "cluster_concentration": {
+            "type": "number"
+          },
+          "corpus": {
+            "type": "string"
+          },
+          "max_influence": {
+            "type": "number"
+          },
+          "objects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "provenance_complete": {
+            "type": "boolean"
+          },
+          "ticket": {
+            "type": "string"
+          },
+          "validation_passed": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "policy_class": "protected_state_mutation",
+      "registry_version": "titan-v12-action-registry/1",
+      "required_bindings": [
+        "objects",
+        "ticket"
+      ],
+      "reversibility_class": "irreversible_without_rollback_proof"
+    },
+    {
+      "aliases": [
+        "ingest_corpus_delta",
+        "append_training_shard",
+        "promote_dataset_revision"
+      ],
+      "canonical_action": "merge_training_data",
+      "description": "Merge shards into protected training data",
+      "effect_class": "irreversible_training_state_change",
+      "entry_hash": "4c13aef6f850f656ac1957786f059e46656982531afa2fc64629b5e439f93cbe",
+      "parameters": {
+        "properties": {
+          "blast_radius": {
+            "type": "number"
+          },
+          "corpus": {
+            "type": "string"
+          },
+          "max_influence": {
+            "type": "number"
+          },
+          "objects": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "path": {
+            "type": "string"
+          },
+          "provenance_complete": {
+            "type": "boolean"
+          },
+          "ticket": {
+            "type": "string"
+          },
+          "validation_passed": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "policy_class": "protected_state_mutation",
+      "registry_version": "titan-v12-action-registry/1",
+      "required_bindings": [
+        "path"
+      ],
+      "reversibility_class": "reversible_with_evidence"
+    },
+    {
+      "aliases": [
+        "retune_eval_sensitivity",
+        "adjust_holdout_threshold"
+      ],
+      "canonical_action": "weaken_canary",
+      "description": "Modify canary evaluation sensitivity",
+      "effect_class": "evaluation_integrity_change",
+      "entry_hash": "726c19213067ce96d675fad4b2cf0bb2204cf36d39fe3baa2f540cdd883e04a0",
+      "parameters": {
+        "properties": {
+          "canary_delta": {
+            "type": "number"
+          },
+          "eval_name": {
+            "type": "string"
+          },
+          "replacement_present": {
+            "type": "boolean"
+          },
+          "rollback_evidence_digest": {
+            "type": "string"
+          },
+          "rollback_plan": {
+            "type": "string"
+          },
+          "rollback_test_passed": {
+            "type": "boolean"
+          },
+          "ticket": {
+            "type": "string"
+          },
+          "weakens_enforcement": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "policy_class": "protected_state_mutation",
+      "registry_version": "titan-v12-action-registry/1",
+      "required_bindings": [
+        "eval_name"
+      ],
+      "reversibility_class": "reversible_with_evidence"
+    },
+    {
+      "aliases": [
+        "retire_holdout_eval",
+        "disable_canary_suite"
+      ],
+      "canonical_action": "remove_canary",
+      "description": "Remove a canary evaluation",
+      "effect_class": "evaluation_integrity_change",
+      "entry_hash": "ce463912772236d7de26d32393b9abe972ba448aeb88cd72e6505c3289144fb6",
+      "parameters": {
+        "properties": {
+          "eval_name": {
+            "type": "string"
+          },
+          "replacement_present": {
+            "type": "boolean"
+          },
+          "rollback_plan": {
+            "type": "string"
+          },
+          "ticket": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "policy_class": "protected_state_mutation",
+      "registry_version": "titan-v12-action-registry/1",
+      "required_bindings": [
+        "eval_name"
+      ],
+      "reversibility_class": "reversible_with_evidence"
+    },
+    {
+      "aliases": [
+        "update_policy_graph",
+        "patch_production_safeguard"
+      ],
+      "canonical_action": "modify_safeguard",
+      "description": "Modify a safeguard monitor policy",
+      "effect_class": "safeguard_policy_change",
+      "entry_hash": "ce8994221a8c62f47fc14a6263690e7ef347c098e7b09c9fc732d470f7cce170",
+      "parameters": {
+        "properties": {
+          "after": {
+            "type": "object"
+          },
+          "before": {
+            "type": "object"
+          },
+          "hidden_probe_results": {
+            "type": "array"
+          },
+          "path": {
+            "type": "string"
+          },
+          "policy_graph_digest": {
+            "type": "string"
+          },
+          "rollback_evidence_digest": {
+            "type": "string"
+          },
+          "rollback_plan": {
+            "type": "string"
+          },
+          "rollback_test_passed": {
+            "type": "boolean"
+          },
+          "state_snapshot_digest": {
+            "type": "string"
+          },
+          "ticket": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "policy_class": "protected_state_mutation",
+      "registry_version": "titan-v12-action-registry/1",
+      "required_bindings": [
+        "path"
+      ],
+      "reversibility_class": "reversible_with_evidence"
+    }
+  ],
+  "registry_sha256": "ad303932b5e9ba7e9b598beddbce50a8a407abd4180434039ae9d02c5eb37842",
+  "schema": "titan-v12-action-registry/1",
+  "tool_names": [
+    "adjust_holdout_threshold",
+    "append_training_shard",
+    "disable_canary_suite",
+    "ingest_corpus_delta",
+    "launch_model_update",
+    "merge_training_data",
+    "modify_safeguard",
+    "patch_production_safeguard",
+    "promote_dataset_revision",
+    "queue_training",
+    "remove_canary",
+    "retire_holdout_eval",
+    "retune_eval_sensitivity",
+    "schedule_refresh",
+    "submit_training_job",
+    "update_policy_graph",
+    "weaken_canary"
+  ]
+}

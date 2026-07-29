@@ -1,0 +1,72 @@
+{
+  "enforcement": {
+    "stop_on_returned_model_mismatch": true,
+    "stop_on_xai_fingerprint_mismatch": true,
+    "use_frozen_ids_only_after_seal": true
+  },
+  "naming": {
+    "not_claimed": "universal_all_frontier_configs",
+    "note": "Primary live lane freezes exact OpenAI GPT-5.5-family snapshot against exact xAI Grok 4.3 id/fingerprint. Reproduction mini slice is separate and never pooled into transfer metrics.",
+    "transfer_lane": "frontier_class_transfer_gpt55_vs_grok43"
+  },
+  "primary_live": {
+    "provider-openai": {
+      "frozen_model_id": "gpt-5.5-2026-04-23",
+      "requested_alias": "gpt-5.5",
+      "system_fingerprint": null
+    },
+    "provider-xai": {
+      "catalog_fingerprint": "fp_dec7a6a673",
+      "frozen_model_id": "grok-4.3",
+      "requested_alias": "grok-4.3",
+      "system_fingerprint": "fp_eb3c003fc66c14ed",
+      "version": "1.0"
+    }
+  },
+  "reproduction": {
+    "provider-openai": {
+      "frozen_model_id": "gpt-4o-mini-2024-07-18",
+      "requested_alias": "gpt-4o-mini"
+    },
+    "provider-xai": {
+      "frozen_model_id": "grok-4.3",
+      "requested_alias": "grok-4.3",
+      "system_fingerprint": "fp_eb3c003fc66c14ed"
+    }
+  },
+  "resolution_probes": {
+    "openai_reproduction": {
+      "frozen_model_id": "gpt-4o-mini-2024-07-18",
+      "lane_role": "higher_capability_transfer",
+      "listed_in_models_api": true,
+      "probe_response_id": "chatcmpl-E75e8uP1tdDt5p9B0v5rV6OpZBIMS",
+      "provider": "openai",
+      "requested_alias": "gpt-4o-mini",
+      "system_fingerprint": "fp_33a9b387c2"
+    },
+    "openai_transfer": {
+      "frozen_model_id": "gpt-5.5-2026-04-23",
+      "lane_role": "higher_capability_transfer",
+      "listed_in_models_api": true,
+      "probe_response_id": "chatcmpl-E75e6at0fapIlvlss2i8GohENQLjo",
+      "provider": "openai",
+      "requested_alias": "gpt-5.5",
+      "system_fingerprint": null
+    },
+    "xai": {
+      "aliases": [
+        "grok-4.3-latest",
+        "grok-latest"
+      ],
+      "catalog_fingerprint": "fp_dec7a6a673",
+      "frozen_model_id": "grok-4.3",
+      "lane_role": "reproduction_and_transfer_control",
+      "probe_response_id": "0a81652a-663e-99fa-9b12-ee559eedde4a",
+      "provider": "xai",
+      "requested_alias": "grok-4.3",
+      "system_fingerprint": "fp_eb3c003fc66c14ed",
+      "version": "1.0"
+    }
+  },
+  "schema": "titan-v12-model-contract/1"
+}

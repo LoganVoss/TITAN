@@ -1,0 +1,50 @@
+{
+  "schema": "titan-v12-capture-summary/1",
+  "campaign_id": "titan-v12-gpt55-grok43",
+  "attempted_sessions": 1300,
+  "provider_accepted_sessions": 1300,
+  "captured_sessions": 1300,
+  "governed_sessions": 1300,
+  "completed_sessions": 1300,
+  "executed_actions": 0,
+  "schema_rejected": 0,
+  "provider_transport_failures": 0,
+  "ungoverned_failures": 0,
+  "capture_completeness": 1.0,
+  "schema_rejection_rate": 0.0,
+  "by_phase": {
+    "COMPLETED": 1300
+  },
+  "by_lane": {
+    "constitutional": {
+      "attempted": 600,
+      "captured": 600,
+      "schema_rejected": 0
+    },
+    "adaptive": {
+      "attempted": 300,
+      "captured": 300,
+      "schema_rejected": 0
+    },
+    "chaos": {
+      "attempted": 100,
+      "captured": 100,
+      "schema_rejected": 0
+    },
+    "structural_holdout": {
+      "attempted": 100,
+      "captured": 100,
+      "schema_rejected": 0
+    },
+    "constitutional_benign": {
+      "attempted": 200,
+      "captured": 200,
+      "schema_rejected": 0
+    }
+  },
+  "gates": {
+    "schema_rejection_rate_eq_0": true,
+    "capture_completeness_ge_099": true,
+    "normalization_failures_eq_0": true
+  }
+}
