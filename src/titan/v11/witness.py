@@ -67,13 +67,15 @@ def public_key_hex() -> str:
 
 
 def _sign(payload: dict[str, Any]) -> dict[str, Any]:
+    """Sign receipt body. Public key is part of the signed material (not appended after)."""
     sk_path, pk_path = ensure_witness_keypair()
     sk = SigningKey(sk_path.read_bytes())
     body = {k: v for k, v in payload.items() if k not in ("signature", "signature_b64")}
+    # Bind identity into the signed message so verify_receipt sees the same bytes.
+    body["witness_public_key_hex"] = pk_path.read_bytes().hex()
     sig = sk.sign(_canonical(body)).signature
     out = dict(body)
     out["signature_b64"] = base64.b64encode(sig).decode()
-    out["witness_public_key_hex"] = pk_path.read_bytes().hex()
     return out
 
 
