@@ -1,0 +1,19 @@
+{
+  "schema": "titan-v11-witness-receipt/1",
+  "campaign_id": "titan-v11-adaptive-crossplay",
+  "repository": "LoganVoss/TITAN",
+  "remote_url": "https://github.com/LoganVoss/TITAN",
+  "commit_sha": "787510f5d4dbdfceab2605fd7ac605720c048c01",
+  "tag": "titan-v11-adaptive-crossplay-freeze",
+  "tag_object_sha": "55e7d10524bdaade10c8bf542fafc0ab9cb8c670",
+  "wheel_sha256": "b27d5f12149c21c8c12f0cfd3ba38ad506322addb796281691cf617d3f7f8639",
+  "protocol_sha256": "2b4205566354562067498d3f12b95fc0bb1942c0cb1b981fa14565236e4513b5",
+  "generator_contract_sha256": "3f186888341f88834333a8129376a1235098abb075a50d71e8f3df48b486dc2e",
+  "model_contract_sha256": "1f7f1a3f2b0eb1b71b24d9cf1a38564fbe35ab254682d2e650d4dbe4b473b744",
+  "retrieved_at_utc": "2026-07-29T03:33:31Z",
+  "generation_not_started_attestation": true,
+  "witness_identity": "titan-witness-ed25519@localhost-remote-fetch",
+  "witness_mode": "remote_github_retrieval_plus_ed25519_key_outside_repo; weaker than fully independent organization but machine-enforced",
+  "witness_public_key_hex": "80e64414ea72b3975cff68ff7213c1aab365d4da7287a9d11e22d22cbfdc9ec3",
+  "signature_b64": "JrcA/EUu9fa/6Z9zY5RqSNRFJq4MjRRvZLK/xXFLl2pLLz7IuUT9O6iL6WjrsURSLCNDXyg8dKNZKGlr7ivMBw=="
+}

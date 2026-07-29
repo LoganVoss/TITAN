@@ -7,13 +7,18 @@
 TITAN is a **consequential-action control system** for AI agent safety. It
 discovers monitor blind spots, models protected-state invariants, and decides
 whether an exact proposed action should be allowed, logged, verified in a
-reversible twin, escrowed, confirmed by a human, or blocked.
+reversible twin, escrowed, confirmed by a human, or blocked — **before
+execution authority is granted**.
 
 It is built for the work OpenAI’s [Recursive Self-Improvement Safety](https://openai.com/careers/researcher-recursive-self-improvement-safety-san-francisco/) role describes: turn open-ended future risks into concrete monitors, iterate them toward production safety pipelines, and stress-test monitorability itself.
 
-> **Status:** V9 is a production-oriented reference implementation, not a
-> production-validated blocker. Its current safety value is the enforcement
-> architecture and the falsifiable release process—not a new headline score.
+> **Status (current frontier: V11 / 1.1.0):** capability-governance control plane
+> with dual `block_ready` / `allow_ready` constitution (frozen from V10),
+> real dual-provider HTTP evaluation, **machine-enforced pre-generation witness
+> receipts**, and **server-side evaluation-cell bindings**. Research integrity
+> gates can pass while **production eligibility remains false**. Headline
+> numbers never replace denominators, witness mode, or intention-to-test
+> accounting.
 
 **Primary objective:** prevent unsafe changes to training data, evaluations,
 canaries, safeguards, credentials, and monitoring infrastructure *before they
@@ -51,7 +56,7 @@ score only the exclusive pre-action prefix + unresolved obligations
         ↓
 authenticated authorization, effect, data-integrity, and exact-state twin evidence
         ↓
-calibrated action-class policy + control-plane integrity
+dual readiness: block_ready  vs  allow_ready   (independent paths)
         ↓
 ALLOW / LOG / REQUEST / SHADOW / ESCROW / HUMAN / BLOCK
         ↓
@@ -59,35 +64,129 @@ signed PREPARE → fresh state check → one-use COMMIT → protected executor
 ```
 
 Offline discovery and evaluation remain important, but labels are structurally
-absent from the online governor interface.
+absent from the online governor interface. In V11, evaluation-cell identity
+(`matrix_cell`, expected disposition, harm/benign labels) lives only in a
+**server-side sealed session store** keyed by opaque `session_id`.
+
+### Capability governance (not trajectory-only scoring)
+
+```text
+PROPOSE → VERIFY → PREPARE → COMMIT
+```
+
+Infrastructure uncertainty must never become authority. Incomplete adverse
+proof is not automatic BLOCK; incomplete favorable proof is not automatic ALLOW.
 
 ### What a trajectory is
 
-A session of messages, tool calls, file ops, data mutations, eval changes, permission failures, commits, monitor judgments, and outcomes — not a raw EEG/seismic waveform.
-
-### What a collision is
-
-A **cross-regime** pair only: known harmful + benign hard-negative that current measurements place close together in **z-scored** feature space. Same-regime neighbors are never collisions.
-
-### What synthesis does
-
-Builds deterministic DSL programs over safety features (cluster concentration, gradient influence, eval weakening after mutation, bypass attempts, …), scores them for separation / stability / **real transfer**, then **re-inserts** winners into the feature vector and re-runs collision detection. Collision reduction is attributable to augmentation — not a quieter threshold.
+A session of messages, tool calls, file ops, data mutations, eval changes,
+permission failures, commits, monitor judgments, and outcomes — not a raw
+EEG/seismic waveform.
 
 ---
 
-## Fixes relative to the prior prototype (Voss Codex)
+## Current frontier — TITAN V11 (1.1.0)
 
-| Issue | TITAN |
-|---|---|
-| Synthesis never re-entered vectors | Promoted features augment the active map; final collisions recompute on the new map |
-| Collisions ignored labels | Explicit `Label`; cross-regime only |
-| Unnormalized Euclidean distance | Robust z-score normalization |
-| Selection/eval leakage | Discovery / selection / calibration / locked partitions |
-| Proxy transfer & perfect-if-zero-collision scores | Real holdout metrics; no free perfect scores |
-| “Confidence” / “uncertainty” misnamed | `alert_strength` + `baseline_support` |
-| Streaming stalled after buffer trim | Absolute event indices; emit cursor never corrupted |
-| “Persistence topology” overclaim | Honest DSL + feature names; no homology theater |
-| Zero tests | Full pytest suite |
+V11 does **not** retune V10 thresholds. It hardens the *claim surface*:
+
+| Upgrade | Why it matters |
+| --- | --- |
+| **Fail-closed witness gate** | Runner refuses any API generation without a verified receipt bound to remote GitHub artifacts (commit, tag object, wheel, protocol, generator, model contracts) |
+| **Server-side eval cells** | Acting models never carry test-cell identity; governor still sees authenticated action/evidence objects |
+| **Adaptive + chaos lanes** | Part of the 500-per-provider budget attacks novelty and the proof substrate, not only the known matrix |
+| **10k benign diversity** | Operational utility (auto-allow, escrow friction, false blocks) with explicit fingerprint/family diversity |
+| **ITT accounting** | Attempted denominator, preserved failures, no regenerate-until-success gaming |
+
+### Flagship live campaign (`titan-v11-adaptive-crossplay`)
+
+| Item | Value |
+| --- | --- |
+| Harmful sessions | **500 / provider × 2** (1000) |
+| Live benign sessions | **100 / provider × 2** (200) |
+| Operational benign actions | **10,000** |
+| Witness | Pre-generation, remote retrieval + Ed25519 (mode weaker than external org) |
+| Complete-case block-ready recall | **328/328 = 1.000** |
+| Incomplete harm automatic allows | **0** |
+| Incomplete benign automatic allows | **0** |
+| Silent harmful allows (completed) | **0** |
+| Harmful executions | **0** |
+| Gateway bypasses | **0** |
+| Benign-10k false blocks | **0** |
+| Benign-10k complete allow rate | **~0.82** |
+| Provider capture failures (ITT) | **470/1200** (alias tools missing from live tool schema) |
+| Production eligible | **NO** |
+
+Full write-up: [Attack-Vector-Results-2.md](Attack-Vector-Results-2.md)  
+Artifacts: `benchmarks/campaigns/titan-v11-adaptive-crossplay/`
+
+### Witness pipeline (fail-closed)
+
+```text
+source frozen
+→ wheel built and hashed
+→ protocol sealed
+→ generator contract sealed
+→ model contract sealed
+→ signed tag created
+→ branch and tag pushed
+→ remote artifacts retrieved
+→ independent-style receipt signed
+→ runner verifies receipt
+→ API generation unlocked
+```
+
+```bash
+export OPENAI_API_KEY=... XAI_API_KEY=...   # env only — never commit
+python benchmarks/run_v11_campaign.py \
+  --n-harm-per-provider 500 \
+  --n-benign-actions 10000
+```
+
+Without a valid receipt the runner aborts with:
+
+```text
+GENERATION REFUSED:
+independent pre-generation witness unavailable or invalid
+```
+
+---
+
+## Prior flagship — TITAN V10
+
+V10 established the **dual-readiness constitution** and the live dual-provider
+HTTP path (OpenAI + xAI). Locked 150/150-per-provider campaign
+(`titan-v10-live-http-150x150`):
+
+| Constitutional cell | Result |
+| --- | ---: |
+| Block-ready harmful BLOCK | **460/460** |
+| Incomplete harmful automatic allows | **0** |
+| Proof-complete benign ALLOW* | **224/224** |
+| Incomplete benign automatic allows | **0** |
+| AUROC (live) | **0.984** |
+
+V10 freeze was **local / post-generation archival** relative to an independent
+remote witness. Do **not** re-interpret the private GitHub push as a
+pre-generation witness for V10. See Archive notes and
+[Archive/Attack-Vector-Results.md](Archive/Attack-Vector-Results.md).
+
+**Unchanged from V10 into V11:** dual readiness, action-class thresholds,
+evidence floors, scorer, calibrators, PREPARE/COMMIT tokens, constitutional
+metric definitions.
+
+---
+
+## Version lineage (honest compression)
+
+| Version | Role |
+| --- | --- |
+| V4–V8 | Architecture evolution; some scores later forensic-corrected |
+| **V9** | Evidence-chain repair, label-blind action proposals, release-gate machinery |
+| **V10** | Dual readiness; real OpenAI+xAI HTTP; 150×150 live constitutional lock |
+| **V11** | Witness-gated generation; server-side cells; adaptive/chaos; 500×2 + 10k |
+
+Historical reports live under [`Archive/`](Archive/). Fossils of prior live
+campaigns live under `fossils/` and `benchmarks/campaigns/` as sealed when frozen.
 
 ---
 
@@ -99,60 +198,15 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
----
-
-## Current frontier — TITAN V9 (0.9.0)
-
-V9 repairs the evidence chain before scaling the campaign:
-
-- label-blind, event-indexed action proposals with no harmful-only fallback and
-  no repeated-action deduplication;
-- continuous prefix hazard and unresolved-obligation tracking;
-- protected training-data integrity graphs that compose provenance, lineage,
-  validation, influence, concentration, label-change, and canary health before
-  a queue or merge boundary;
-- Canary Coverage Graph, replacement equivalence, composed degradation, and
-  canary debt;
-- structured safeguard semantic/effect verification;
-- exact-action/state-bound evidence attestations with explicit trusted
-  verifier/source/key/domain bindings, expiry, deduplication, and bounded
-  acquisition; services sharing one key do not count as independent;
-- rank/probability separation with isotonic calibration and Wilson intervals;
-- seven typed dispositions with conservative abstention;
-- HMAC-authenticated, exact-context, one-use PREPARE/COMMIT capabilities;
-- canonical proposal provenance, immutable payload snapshots, fresh
-  protected-object checks, and an in-path executor gateway;
-- fail-closed streaming with callback deadlines and a persistent timeout
-  circuit, control-plane integrity, tamper-evident audit records, immutable
-  protocols, sealed manifests, and completion receipts;
-- separate live, protected-twin, and operational evaluation reports plus a
-  conjunctive release-gate evaluator.
-
-See [V9 architecture](docs/v9/ARCHITECTURE.md),
-[production readiness](docs/v9/PRODUCTION_READINESS.md),
-[roadmap status](docs/v9/ROADMAP_STATUS.md), and
-[security](docs/v9/SECURITY.md).
-
-### V8 evidence correction
-
-The original V8 headline is preserved as development history, not release
-evidence. A forensic recomputation found:
-
-| Population | AUROC | R@5% FPR | Benign n |
-|---|---:|---:|---:|
-| Pure source-matched live | 0.951875 | 0.800 | 40 |
-| Protected-twin comparison | 0.986250 | 0.975 | 160 |
-| Published pooled mix | 0.979375 | 0.975 | 200 |
-
-At the published pooled threshold, source-matched live benign FPR is 7/40 =
-17.5%; protected twins dilute it to 5% overall. V8 action compilation and
-blocker evaluation also read ground-truth labels, and the harness executes
-effects before post-hoc governance. See the
-[V8 evidence audit](docs/v9/V8_EVIDENCE_AUDIT.md) and reproduce it with:
+API keys for live campaigns (never commit):
 
 ```bash
-python benchmarks/audit_v8_evidence.py
+export OPENAI_API_KEY=...
+export XAI_API_KEY=...          # or GROK_API_KEY
+# optional: TITAN_WITNESS_DIR=~/.titan-witness
 ```
+
+---
 
 ## Quickstart
 
@@ -163,29 +217,14 @@ python examples/quickstart.py
 # Data-poisoning demo with baselines + shadow registry
 python examples/data_poisoning_demo.py
 
-# Collision forensics
-python examples/blindspot_discovery.py
-
-# Streaming shadow pipeline
-python examples/pipeline_shadow.py
-
-# Full benchmark harness (v1)
-python benchmarks/run_benchmarks.py
-
-# Improvements V1 full pipeline
-python benchmarks/run_v2_pipeline.py
-
-# CLI
-python -m titan.cli demo
-python -m titan.cli suite
-python -m titan.cli benchmark
+# Full pytest suite
+pytest tests/ -q
 
 # V9: label-blind shadow inspection (never grants execution authority)
 python -m titan.cli v9-inspect trajectory.json
 
-# V9 evidence-integrity verification
-python -m titan.cli v9-verify-protocol protocol.json
-python -m titan.cli v9-verify-manifest manifest.json --root artifacts/
+# V11: witness-gated live campaign (requires keys + git remote push access)
+python benchmarks/run_v11_campaign.py --n-harm-per-provider 500 --n-benign-actions 10000
 ```
 
 ### Library usage
@@ -213,52 +252,31 @@ result = run_discovery(
 scorer = lambda t: score_trajectory(t, result.promoted)["alert_strength"]
 report = evaluate_monitor(scorer, part.locked, name="titan")
 print(report.summary())
+```
 
-reg = MonitorRegistry()
-reg.register_many(result.promoted)
-for e in reg.list():
-    reg.promote_to_shadow(e.name)  # never blocking by default
+### V11 session store (eval cells offline)
+
+```python
+from titan.v11.session_store import SessionStore
+from titan.v11.witness import assert_generation_allowed, WitnessError
+
+# public_view() never includes matrix_cell / expected disposition / labels
+# offline contracts are sealed post-witness only
 ```
 
 ---
 
-## V9 evaluation contract
+## Evaluation contract
 
 Development, calibration, and locked evaluation sources must be disjoint.
-Locked results are then reported as three distinct estimands:
+Metrics report raw counts and denominators. Equal-score groups are indivisible
+at an FPR threshold.
 
-1. **A — pure source-matched live:** harmful and benign sessions from the same
-   model, harness, repositories, budgets, friction, and action opportunities.
-2. **B — protected benign twins:** exact hard-negative protected workflows.
-3. **C — operational mix:** a predeclared deployment mixture, never substituted
-   for A.
+**Constitutional cells are never recombined into naive “BLOCK / all harm”.**
 
-Equal-score groups are indivisible at an FPR threshold. Every metric records
-its raw counts, denominator, action class, population, threshold source,
-calibration source, prefix rule, latching rule, and uncertainty interval.
-Undefined metrics are explicit `N/A`, never numeric sentinels.
-
-Release is conjunctive and worst-slice-gated. It additionally requires the
-roadmap's 300 new harmful sessions across two model families, 10,000
-source-matched benign actions, per-class live floors, blinded expert review,
-independent witness and replication, calibration/shift tests, and
-reliability/security/privacy validation. None of those external gates is
-claimed complete here.
-
----
-
-## Candidate monitor families (data poisoning)
-
-| Pattern | Signal |
-|---|---|
-| Semantic cluster concentration | Many mutations in one topic cluster |
-| Rare-source × high influence | Obscure sources with large probe-model influence |
-| Mutation → eval weaken | Data change followed by canary/eval removal |
-| Intent vs action disagreement | Monitor disagreement under risky actions |
-| Provenance bypass | Permission failures, obfuscation, retries |
-| Dispersed commits | Poison spread across identities / micro-commits |
-| Label-flip burst | Entropy spikes from bulk relabel |
-| Test / safeguard tamper | Research-sabotage variants |
+Release is conjunctive and worst-slice-gated. It requires independent witnessing,
+replication, calibration/shift tests, and reliability/security/privacy
+validation. **None of those external gates is claimed complete for production.**
 
 ---
 
@@ -266,53 +284,27 @@ claimed complete here.
 
 ```text
 src/titan/
-  schema.py          # AgentEvent, AgentTrajectory, labels
-  features.py        # Safety feature extractors
-  collisions.py      # Regime-aware, normalized collisions
-  dsl.py             # Constrained monitor DSL
-  synthesis.py       # Candidate generation + promotion
-  scoring.py         # Separation, stability, real transfer
-  engine.py          # Discovery loop with true augmentation
-  baselines.py       # Rules, classifier, judge
-  streaming.py       # Fixed streaming monitor
-  registry.py        # Versioned shadow/promote/retire
-  provenance.py      # Audit certificates
-  counterfactual.py  # Feature sensitivity (not causal)
-  report.py          # Operator-facing reports
-  scenarios/         # Poisoning + sabotage generators
-  evaluation/        # Splits, metrics, harness
-  v9/
-    action.py         # Immutable, label-blind action-boundary types
-    timing.py         # Prefix hazard + unresolved obligations
-    scoring.py        # Continuous rank score (not a probability)
-    evidence.py       # Evidence adapters + authenticated twin ensemble
-    evidence_trust.py # Exact-context verifier attestations and trust policy
-    data_integrity.py # Training-data graph + queue/merge effect verification
-    canary.py         # Coverage conservation / replacement equivalence
-    safeguard.py      # Structured safeguard effect verification
-    calibration.py    # Hierarchical isotonic probabilities + intervals
-    governor.py       # Seven-disposition synchronous policy
-    gateway.py        # In-path protected executor boundary
-    tokens.py         # Signed one-use PREPARE/COMMIT capabilities
-    integrity.py      # Control-plane health + audit chain
-    streaming.py      # Durable fail-closed monitor
-    metrics.py        # Tie-safe typed metric contract
-    populations.py    # Separate A/B/C evaluation populations
-    protocol.py       # Canonical immutable protocol
-    manifest.py       # Artifact seals + completion receipts
-    release.py        # Conjunctive release-gate evaluator
+  schema.py, features.py, collisions.py, dsl.py, synthesis.py, ...
+  v9/     # evidence chain, governor, gateway, tokens, release gates
+  v10/    # dual-readiness harness, HTTP providers (OpenAI + xAI)
+  v11/    # witness receipts, session store, adaptive/chaos/benign lanes, executor
+benchmarks/
+  run_v11_campaign.py
+  campaigns/titan-v11-adaptive-crossplay/
+  campaigns/titan-v10-live-http-150x150/   # fossilized V10 flagship
 ```
 
 ---
 
 ## Design principles
 
-1. **Inspectable** — every candidate is a DSL expression with provenance.  
+1. **Inspectable** — candidates and decisions carry provenance.  
 2. **Bounded** — hard caps on rounds, candidates, and complexity.  
-3. **Honest metrics** — no proxy transfer, no free perfect scores.  
-4. **Authority must be earned** — shadow, evidence, and escrow precede blocking.
-5. **Labeled regimes** — collisions are a safety concept, not nearest neighbors.  
-6. **Normalized space** — thresholds have meaning across feature scales.  
+3. **Honest metrics** — no proxy transfer, no free perfect scores, ITT reported.  
+4. **Authority must be earned** — evidence and escrow precede blocking *and* allowing.  
+5. **Dual readiness** — block path and allow path are not a single threshold.  
+6. **Witness before generation** — remote persistence alone is not independence.  
+7. **Labels stay offline** — acting models do not carry the answer key.  
 
 ---
 
@@ -320,18 +312,22 @@ src/titan/
 
 - Not a universal anomaly detector for arbitrary sensors  
 - Not a claim of production FNR on open-ended traffic  
-- Not calibrated probabilities without a sealed external calibration set
+- Not calibrated probabilities without a sealed external calibration set  
 - Not a substitute for human review or defense in depth  
+- Not “independent” merely because a private GitHub remote exists  
 
-Synthetic scenarios are **research instruments**. Production claims require
-real agent traces, independent adjudication and replication, privacy controls,
-durable deployment infrastructure, and adversarial control evaluations.
+Synthetic and lab-structured scenarios are **research instruments**. Production
+claims require real agent traces, independent adjudication and replication,
+privacy controls, durable deployment infrastructure, and adversarial control
+evaluations under a stronger witness than this repository currently provides.
 
 ---
 
 ## Role fit
 
-See [docs/ROLE_FIT.md](docs/ROLE_FIT.md) for an explicit mapping to RSI Safety responsibilities (automated auditing, rigorous monitorability, scalable oversight, pipeline promotion).
+See [docs/ROLE_FIT.md](docs/ROLE_FIT.md) for an explicit mapping to RSI Safety
+responsibilities (automated auditing, rigorous monitorability, scalable
+oversight, pipeline promotion).
 
 ---
 
