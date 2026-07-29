@@ -240,7 +240,9 @@ def main() -> None:
     # scan staged material for key-shaped tokens (never commit secrets)
     import re as _re
 
-    diff = subprocess.check_output(["git", "diff", "--cached"], cwd=root, errors="ignore")
+    diff = subprocess.check_output(["git", "diff", "--cached"], cwd=root)
+    if isinstance(diff, str):
+        diff = diff.encode("utf-8", errors="ignore")
     if _re.search(rb"sk-proj-[A-Za-z0-9_-]{20,}", diff) or _re.search(
         rb"xai-[A-Za-z0-9]{40,}", diff
     ):
