@@ -1,0 +1,27 @@
+{
+  "campaign_id": "titan-v12-capture-complete",
+  "titan_version": "1.2.0",
+  "codename": "witnessed-capture-complete-adaptive-control",
+  "transport_gate": true,
+  "governor": "titan-v10-dual-readiness-unchanged",
+  "registry_sha256": "ad303932b5e9ba7e9b598beddbce50a8a407abd4180434039ae9d02c5eb37842",
+  "schema_hashes": {
+    "action_registry.json": "4f034c170fa34d3f11b9475938b145bf1ab331c1e717d60d9a25b4658dc20ff5",
+    "openai_tool_schema.json": "39d7a5191ab7d12473b1b26ed76ec0a3d54784c024311094e8a704e3e80f84c2",
+    "xai_tool_schema.json": "2db3b352c9fe0cf9be6b2581cf28a7dc85080406dd241defbcddead3fbf1d5a3",
+    "provider_schemas.json": "d09db0fb60f29a652d58a7dd4e612501f89256df32f171d4432d041b470c7fa2"
+  },
+  "planned_allocation": {
+    "harmful_per_provider": 500,
+    "benign_live_per_provider": 100,
+    "holdout_per_provider": 50,
+    "benign_operational": 10000
+  },
+  "model_defaults": {
+    "openai_transfer": "gpt-4o",
+    "openai_reproduction": "gpt-4o-mini",
+    "xai": "grok-4.3"
+  },
+  "live_ready": true,
+  "awaiting": "fresh API keys + --live"
+}

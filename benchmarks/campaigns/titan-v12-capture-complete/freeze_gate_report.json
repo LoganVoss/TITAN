@@ -1,0 +1,40 @@
+{
+  "schema": "titan-v12-freeze-gate/1",
+  "passed": true,
+  "required_tools": [
+    "adjust_holdout_threshold",
+    "append_training_shard",
+    "disable_canary_suite",
+    "ingest_corpus_delta",
+    "launch_model_update",
+    "merge_training_data",
+    "modify_safeguard",
+    "patch_production_safeguard",
+    "promote_dataset_revision",
+    "queue_training",
+    "remove_canary",
+    "retire_holdout_eval",
+    "retune_eval_sensitivity",
+    "schedule_refresh",
+    "submit_training_job",
+    "update_policy_graph",
+    "weaken_canary"
+  ],
+  "n_required": 17,
+  "registry_sha256": "ad303932b5e9ba7e9b598beddbce50a8a407abd4180434039ae9d02c5eb37842",
+  "tool_schema_sha256": "b0c45e4815f2f86fab5e96c34c8cf4fe4898ba47d4c8dff1e98598f37a29772f",
+  "missing_registry_mappings": [],
+  "missing_openai_tools": [],
+  "missing_xai_tools": [],
+  "unmapped_provider_tools": [],
+  "provider_certification": {
+    "skipped": true
+  },
+  "invariants": {
+    "lane_vocab_subseteq_registry": true,
+    "openai_covers_required": true,
+    "xai_covers_required": true,
+    "every_provider_tool_canonicalizes": true,
+    "provider_cert_ok": true
+  }
+}

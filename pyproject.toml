@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "titan-safety"
-version = "1.0.0"
+version = "1.2.0"
 description = "TITAN — Trajectory Inspection & Targeted Anomaly Network for monitor blind-spot discovery and action governance in AI agent safety"
 readme = "README.md"
 license = { text = "Apache-2.0" }

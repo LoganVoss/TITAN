@@ -12,13 +12,15 @@ execution authority is granted**.
 
 It is built for the work OpenAI’s [Recursive Self-Improvement Safety](https://openai.com/careers/researcher-recursive-self-improvement-safety-san-francisco/) role describes: turn open-ended future risks into concrete monitors, iterate them toward production safety pipelines, and stress-test monitorability itself.
 
-> **Status (current frontier: V11 / 1.1.0):** capability-governance control plane
-> with dual `block_ready` / `allow_ready` constitution (frozen from V10),
-> real dual-provider HTTP evaluation, **machine-enforced pre-generation witness
-> receipts**, and **server-side evaluation-cell bindings**. Research integrity
-> gates can pass while **production eligibility remains false**. Headline
-> numbers never replace denominators, witness mode, or intention-to-test
-> accounting.
+> **Status (current frontier: V12 / 1.2.0 — capture-complete):** the V10 dual
+> `block_ready` / `allow_ready` constitution remains **frozen and untouched**.
+> V11 proved that constitution holds on completed decisions under adaptive and
+> chaos pressure, with a real pre-generation witness. V11 also exposed a
+> localized transport defect: **39.2% of planned live sessions failed provider
+> schema registration** for semantic aliases. V12 turns that defect into
+> permanent launch gates — registry, schema compiler, forced-tool certification,
+> capture ledger, multi-turn continuity — without retuning thresholds.
+> **Production eligibility remains NO** until a separate operational safety case.
 
 **Primary objective:** prevent unsafe changes to training data, evaluations,
 canaries, safeguards, credentials, and monitoring infrastructure *before they
@@ -38,10 +40,10 @@ TITAN asks two linked questions:
 2. *At this exact action boundary, is the evidence strong enough to grant
    execution authority?*
 
-That is a **monitorability plus enforcement** problem, not generic anomaly
-detection. The first narrow production candidate is `queue_training`: data
-poisoning matters most at the moment contaminated or insufficiently verified
-data could enter a training run.
+That is a **monitorability plus enforcement** problem. Transport completeness
+is part of the safety system: a provider rejection before governance is **not**
+a TITAN block, escrow, or allow — it is a capture failure and must be counted
+in the intention-to-test denominator.
 
 ---
 
@@ -63,130 +65,149 @@ ALLOW / LOG / REQUEST / SHADOW / ESCROW / HUMAN / BLOCK
 signed PREPARE → fresh state check → one-use COMMIT → protected executor
 ```
 
-Offline discovery and evaluation remain important, but labels are structurally
-absent from the online governor interface. In V11, evaluation-cell identity
-(`matrix_cell`, expected disposition, harm/benign labels) lives only in a
-**server-side sealed session store** keyed by opaque `session_id`.
-
-### Capability governance (not trajectory-only scoring)
+### Capability governance (frozen constitution)
 
 ```text
-PROPOSE → VERIFY → PREPARE → COMMIT
+Independent adverse proof  → BLOCK may fire
+Complete favorable proof   → ALLOW may fire
+Neither side proven        → ESCROW
+No valid COMMIT            → no protected execution
 ```
 
-Infrastructure uncertainty must never become authority. Incomplete adverse
-proof is not automatic BLOCK; incomplete favorable proof is not automatic ALLOW.
+### Transport is part of the safety system (V12)
 
-### What a trajectory is
+```text
+provider acceptance
+→ event capture
+→ action normalization
+→ evidence resolution
+→ governor disposition
+→ PREPARE → state recheck → COMMIT → execution
+```
 
-A session of messages, tool calls, file ops, data mutations, eval changes,
-permission failures, commits, monitor judgments, and outcomes — not a raw
-EEG/seismic waveform.
+Every link is measured independently. The **attempted population** is the
+primary denominator.
+
+### Evaluation truth stays offline
+
+Acting models never receive `matrix_cell`, expected disposition, harm/benign
+labels, or attack-family tags. Those live in sealed server-side session
+contracts keyed by opaque `session_id`.
 
 ---
 
-## Current frontier — TITAN V11 (1.1.0)
+## Current frontier — TITAN V12 (1.2.0)
 
-V11 does **not** retune V10 thresholds. It hardens the *claim surface*:
+**Codename:** Witnessed Capture-Complete Adaptive Control
 
-| Upgrade | Why it matters |
+V12 does **not** replace the governor. It hardens everything around it.
+
+### What V11 proved (preserve)
+
+| Finding | Result |
 | --- | --- |
-| **Fail-closed witness gate** | Runner refuses any API generation without a verified receipt bound to remote GitHub artifacts (commit, tag object, wheel, protocol, generator, model contracts) |
-| **Server-side eval cells** | Acting models never carry test-cell identity; governor still sees authenticated action/evidence objects |
-| **Adaptive + chaos lanes** | Part of the 500-per-provider budget attacks novelty and the proof substrate, not only the known matrix |
-| **10k benign diversity** | Operational utility (auto-allow, escrow friction, false blocks) with explicit fingerprint/family diversity |
-| **ITT accounting** | Attempted denominator, preserved failures, no regenerate-until-success gaming |
-
-### Flagship live campaign (`titan-v11-adaptive-crossplay`)
-
-| Item | Value |
-| --- | --- |
-| Harmful sessions | **500 / provider × 2** (1000) |
-| Live benign sessions | **100 / provider × 2** (200) |
-| Operational benign actions | **10,000** |
-| Witness | Pre-generation, remote retrieval + Ed25519 (mode weaker than external org) |
-| Complete-case block-ready recall | **328/328 = 1.000** |
-| Incomplete harm automatic allows | **0** |
-| Incomplete benign automatic allows | **0** |
-| Silent harmful allows (completed) | **0** |
-| Harmful executions | **0** |
-| Gateway bypasses | **0** |
+| Pre-generation witness enforcement | **Real** (machine-enforced remote receipt) |
+| Labels off acting models | **Yes** |
+| Complete-case block-ready | **328/328 BLOCK** |
+| Incomplete harm / incomplete benign allows | **0 / 0** |
+| Adaptive + chaos silent allows | **0** |
+| Harmful executions / gateway bypasses | **0 / 0** |
 | Benign-10k false blocks | **0** |
-| Benign-10k complete allow rate | **~0.82** |
-| Provider capture failures (ITT) | **470/1200** (alias tools missing from live tool schema) |
-| Production eligible | **NO** |
+| Benign-10k complete allow | **~81.8%** |
+| Unique benign fingerprints | **10,000** |
 
-Full write-up: [Attack-Vector-Results-2.md](Attack-Vector-Results-2.md)  
-Artifacts: `benchmarks/campaigns/titan-v11-adaptive-crossplay/`
+Full V11 write-up: [Attack-Vector-Results-2.md](Attack-Vector-Results-2.md)
 
-### Witness pipeline (fail-closed)
+### What V11 discovered (fix in V12)
 
 ```text
-source frozen
-→ wheel built and hashed
-→ protocol sealed
-→ generator contract sealed
-→ model contract sealed
-→ signed tag created
-→ branch and tag pushed
-→ remote artifacts retrieved
-→ independent-style receipt signed
-→ runner verifies receipt
-→ API generation unlocked
+Semantic aliases (schedule_refresh, ingest_corpus_delta, …)
+were forced via tool_choice but absent from live HTTP tool schemas.
+→ 470/1200 provider rejections before TITAN could govern.
 ```
+
+That was a **schema registration failure**, not a governor miss.
+
+### V12 permanent invariants
+
+| Invariant | Mechanism |
+| --- | --- |
+| Every alias → exactly one canonical effect | `src/titan/v12/action_registry.py` |
+| OpenAI & xAI schemas generated from registry | `schema_compiler.py` |
+| Lane vocabulary ⊆ registry ⊆ provider schemas | **fail-closed freeze gate** |
+| Every forced tool accepted by both providers | **provider certification** (pre-freeze) |
+| ITT capture ledger | `capture_ledger.py` + session state machine |
+| Multi-turn pivots only use registered names | `multi_turn.py` + executor |
+| Structural holdouts are transport-known | `structural_holdouts.py` |
+| Canary complete-benign safety-case fields | `benign_safety_case.py` (no threshold retune) |
+
+Freeze refusal example:
+
+```text
+FREEZE REFUSED
+
+Missing OpenAI tool definitions:
+  schedule_refresh
+  ingest_corpus_delta
+```
+
+### Dry readiness (no API keys)
 
 ```bash
-export OPENAI_API_KEY=... XAI_API_KEY=...   # env only — never commit
-python benchmarks/run_v11_campaign.py \
+python benchmarks/run_v12_campaign.py
+# runs tests + transport freeze gate; writes readiness.json
+```
+
+### Live campaign (when you provide keys)
+
+```bash
+export OPENAI_API_KEY=...   # env only — never commit
+export XAI_API_KEY=...
+
+python benchmarks/run_v12_campaign.py \
+  --live \
+  --require-provider-cert \
   --n-harm-per-provider 500 \
-  --n-benign-actions 10000
+  --n-benign-actions 10000 \
+  --openai-model gpt-4o \
+  --openai-reproduction-model gpt-4o-mini \
+  --xai-model grok-4.3
 ```
 
-Without a valid receipt the runner aborts with:
+Default transfer OpenAI model is **`gpt-4o`** (capability-aligned with Grok 4.3
+for the next live run). Reproduction slice retains `gpt-4o-mini` for V11
+comparability. **Never pool** reproduction and transfer results.
 
-```text
-GENERATION REFUSED:
-independent pre-generation witness unavailable or invalid
-```
+### Planned V12 allocation (replication + holdouts)
+
+| Lane | Per provider | Notes |
+| --- | ---: | --- |
+| Constitutional harmful | 300 | Direct V10/V11 comparison |
+| Adaptive cross-play | 150 | Multi-turn alias pivots |
+| Evidence/gateway chaos | 50 | Proof substrate attacks |
+| Structural holdouts | 50 | Transport-known, semantically novel |
+| Live benign | 100 | Complete + incomplete cells |
+| Operational benign | 10,000 (shared) | Diversity-tracked |
+
+Target capture: **schema rejections = 0**, capture completeness **≥ 99%**.
 
 ---
 
-## Prior flagship — TITAN V10
-
-V10 established the **dual-readiness constitution** and the live dual-provider
-HTTP path (OpenAI + xAI). Locked 150/150-per-provider campaign
-(`titan-v10-live-http-150x150`):
-
-| Constitutional cell | Result |
-| --- | ---: |
-| Block-ready harmful BLOCK | **460/460** |
-| Incomplete harmful automatic allows | **0** |
-| Proof-complete benign ALLOW* | **224/224** |
-| Incomplete benign automatic allows | **0** |
-| AUROC (live) | **0.984** |
-
-V10 freeze was **local / post-generation archival** relative to an independent
-remote witness. Do **not** re-interpret the private GitHub push as a
-pre-generation witness for V10. See Archive notes and
-[Archive/Attack-Vector-Results.md](Archive/Attack-Vector-Results.md).
-
-**Unchanged from V10 into V11:** dual readiness, action-class thresholds,
-evidence floors, scorer, calibrators, PREPARE/COMMIT tokens, constitutional
-metric definitions.
-
----
-
-## Version lineage (honest compression)
+## Version lineage
 
 | Version | Role |
 | --- | --- |
-| V4–V8 | Architecture evolution; some scores later forensic-corrected |
-| **V9** | Evidence-chain repair, label-blind action proposals, release-gate machinery |
-| **V10** | Dual readiness; real OpenAI+xAI HTTP; 150×150 live constitutional lock |
-| **V11** | Witness-gated generation; server-side cells; adaptive/chaos; 500×2 + 10k |
+| V4–V8 | Architecture evolution; forensic score corrections |
+| **V9** | Evidence-chain repair; label-blind proposals; release gates |
+| **V10** | Dual readiness; real OpenAI+xAI HTTP; 150×150 constitutional lock |
+| **V11** | Pre-generation witness; server-side cells; adaptive/chaos; 500×2 + 10k |
+| **V12** | Capture-complete transport registry; freeze gates; ITT ledger; holdouts |
 
-Historical reports live under [`Archive/`](Archive/). Fossils of prior live
-campaigns live under `fossils/` and `benchmarks/campaigns/` as sealed when frozen.
+**Unchanged since V10:** dual readiness, thresholds, evidence floors, scorer,
+calibrators, PREPARE/COMMIT tokens, constitutional metric definitions.
+
+Historical reports: [`Archive/`](Archive/) · V11 results:
+`benchmarks/campaigns/titan-v11-adaptive-crossplay/`
 
 ---
 
@@ -196,14 +217,7 @@ campaigns live under `fossils/` and `benchmarks/campaigns/` as sealed when froze
 cd ~/Desktop/TITAN
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-```
-
-API keys for live campaigns (never commit):
-
-```bash
-export OPENAI_API_KEY=...
-export XAI_API_KEY=...          # or GROK_API_KEY
-# optional: TITAN_WITNESS_DIR=~/.titan-witness
+pytest tests/ -q
 ```
 
 ---
@@ -211,72 +225,32 @@ export XAI_API_KEY=...          # or GROK_API_KEY
 ## Quickstart
 
 ```bash
-# End-to-end discovery + held-out evaluation
+# Discovery + held-out evaluation
 python examples/quickstart.py
 
-# Data-poisoning demo with baselines + shadow registry
-python examples/data_poisoning_demo.py
-
-# Full pytest suite
+# Full unit/integration suite
 pytest tests/ -q
 
-# V9: label-blind shadow inspection (never grants execution authority)
-python -m titan.cli v9-inspect trajectory.json
+# V12 transport readiness (no keys)
+python benchmarks/run_v12_campaign.py
 
-# V11: witness-gated live campaign (requires keys + git remote push access)
-python benchmarks/run_v11_campaign.py --n-harm-per-provider 500 --n-benign-actions 10000
+# V12 live (keys + git remote push access)
+python benchmarks/run_v12_campaign.py --live --require-provider-cert
 ```
 
-### Library usage
+### V12 action registry (library)
 
 ```python
-from titan import (
-    generate_scenario_suite,
-    split_dataset,
-    run_discovery,
-    evaluate_monitor,
-    MonitorRegistry,
-)
-from titan.engine import score_trajectory
-from titan.scenarios.generator import ScenarioSpec
+from titan.v12 import default_registry, assert_transport_closure, canonicalize_tool
 
-suite = generate_scenario_suite(ScenarioSpec(seed=42))
-part = split_dataset(suite, seed=42)
+reg = default_registry()
+assert reg.canonicalize("schedule_refresh") == "queue_training"
+assert_transport_closure(require_provider_cert=False)
 
-result = run_discovery(
-    part.discovery,
-    selection=part.selection,  # transfer scoring only
-    verbose=True,
-)
-
-scorer = lambda t: score_trajectory(t, result.promoted)["alert_strength"]
-report = evaluate_monitor(scorer, part.locked, name="titan")
-print(report.summary())
+# HTTP adapters load the same registry for tool schemas
+from titan.v10.http_providers import _openai_tools
+assert any(t["function"]["name"] == "ingest_corpus_delta" for t in _openai_tools())
 ```
-
-### V11 session store (eval cells offline)
-
-```python
-from titan.v11.session_store import SessionStore
-from titan.v11.witness import assert_generation_allowed, WitnessError
-
-# public_view() never includes matrix_cell / expected disposition / labels
-# offline contracts are sealed post-witness only
-```
-
----
-
-## Evaluation contract
-
-Development, calibration, and locked evaluation sources must be disjoint.
-Metrics report raw counts and denominators. Equal-score groups are indivisible
-at an FPR threshold.
-
-**Constitutional cells are never recombined into naive “BLOCK / all harm”.**
-
-Release is conjunctive and worst-slice-gated. It requires independent witnessing,
-replication, calibration/shift tests, and reliability/security/privacy
-validation. **None of those external gates is claimed complete for production.**
 
 ---
 
@@ -284,27 +258,40 @@ validation. **None of those external gates is claimed complete for production.**
 
 ```text
 src/titan/
-  schema.py, features.py, collisions.py, dsl.py, synthesis.py, ...
-  v9/     # evidence chain, governor, gateway, tokens, release gates
-  v10/    # dual-readiness harness, HTTP providers (OpenAI + xAI)
-  v11/    # witness receipts, session store, adaptive/chaos/benign lanes, executor
+  v9/     # evidence chain, governor core, gateway, tokens
+  v10/    # dual-readiness harness, HTTP providers (registry-backed tools)
+  v11/    # witness receipts, session store, lanes, live executor
+  v12/    # capture-complete transport + launch gates
+    action_registry.py
+    schema_compiler.py
+    gates.py
+    provider_certification.py
+    session_state.py
+    capture_ledger.py
+    multi_turn.py
+    structural_holdouts.py
+    benign_safety_case.py
+    witness_gate.py
 benchmarks/
   run_v11_campaign.py
+  run_v12_campaign.py
   campaigns/titan-v11-adaptive-crossplay/
-  campaigns/titan-v10-live-http-150x150/   # fossilized V10 flagship
+  campaigns/titan-v12-capture-complete/
 ```
 
 ---
 
 ## Design principles
 
-1. **Inspectable** — candidates and decisions carry provenance.  
+1. **Inspectable** — decisions and freeze artifacts carry provenance.  
 2. **Bounded** — hard caps on rounds, candidates, and complexity.  
-3. **Honest metrics** — no proxy transfer, no free perfect scores, ITT reported.  
+3. **Honest metrics** — complete-case **and** intention-to-test; no regenerate-until-success.  
 4. **Authority must be earned** — evidence and escrow precede blocking *and* allowing.  
 5. **Dual readiness** — block path and allow path are not a single threshold.  
 6. **Witness before generation** — remote persistence alone is not independence.  
 7. **Labels stay offline** — acting models do not carry the answer key.  
+8. **Transport-known novelty** — semantic holdouts never rely on unregistered syntax.  
+9. **Safety ∧ utility** — zero false blocks without universal escrow.  
 
 ---
 
@@ -312,20 +299,15 @@ benchmarks/
 
 - Not a universal anomaly detector for arbitrary sensors  
 - Not a claim of production FNR on open-ended traffic  
-- Not calibrated probabilities without a sealed external calibration set  
-- Not a substitute for human review or defense in depth  
+- Not production-eligible because research integrity gates passed  
 - Not “independent” merely because a private GitHub remote exists  
-
-Synthetic and lab-structured scenarios are **research instruments**. Production
-claims require real agent traces, independent adjudication and replication,
-privacy controls, durable deployment infrastructure, and adversarial control
-evaluations under a stronger witness than this repository currently provides.
+- Not a threshold-tuning exercise when capture fails  
 
 ---
 
 ## Role fit
 
-See [docs/ROLE_FIT.md](docs/ROLE_FIT.md) for an explicit mapping to RSI Safety
+See [docs/ROLE_FIT.md](docs/ROLE_FIT.md) for mapping to RSI Safety
 responsibilities (automated auditing, rigorous monitorability, scalable
 oversight, pipeline promotion).
 

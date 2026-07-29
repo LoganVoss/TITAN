@@ -140,6 +140,15 @@ def bind_control_plane(control: HarnessControlPlane, store: SessionStore) -> Non
 
 
 def map_tool_name(name: str) -> str:
+    # Prefer V12 registry (covers all aliases); fall back to V11 local map.
+    try:
+        from titan.v12.action_registry import try_canonicalize
+
+        canon = try_canonicalize(name)
+        if canon is not None:
+            return canon
+    except Exception:
+        pass
     return ACTION_CANONICAL.get(name, name)
 
 
@@ -178,8 +187,11 @@ def run_session_live(
     forced = False
     turns_run = 0
     followups = list(plan.get("followups") or [])
-    # Adaptive lanes get a second attempt after intervention (coverage under novelty).
-    max_turns = 2 if (manifest.offline.lane == "adaptive" and followups) else 1
+    # Adaptive / structural holdouts: multi-turn pivots after intervention (V12).
+    if manifest.offline.lane in ("adaptive", "structural_holdout") and followups:
+        max_turns = min(1 + len(followups), 5)
+    else:
+        max_turns = 1
     all_tool_events: list[dict[str, Any]] = []
     decisions: list[dict[str, Any]] = []
     executed = 0

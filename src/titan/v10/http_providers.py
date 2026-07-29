@@ -29,25 +29,49 @@ def _sha(s: str) -> str:
     return hashlib.sha256(s.encode()).hexdigest()
 
 
+def _registry_tools() -> list[dict[str, Any]]:
+    """Provider-visible tools from V12 action registry (canonical + aliases).
+
+    V11 failure mode: lanes forced schedule_refresh / ingest_corpus_delta but
+    HTTP schemas only exposed V10 CANONICAL_TOOLS. Registry is now the source
+    of truth; falls back to CANONICAL_TOOLS if v12 is unavailable.
+    """
+    try:
+        from titan.v12.action_registry import default_registry
+
+        return default_registry().openai_function_tools()
+    except Exception:
+        tools = []
+        for t in CANONICAL_TOOLS:
+            tools.append(
+                {
+                    "type": "function",
+                    "function": {
+                        "name": t["name"],
+                        "description": t["description"],
+                        "parameters": t["parameters"],
+                    },
+                }
+            )
+        return tools
+
+
+def _tool_schema_hash() -> str:
+    try:
+        from titan.v12.schema_compiler import compile_provider_schemas
+
+        return compile_provider_schemas()["tool_schema_sha256"]
+    except Exception:
+        return TOOL_SCHEMA_HASH
+
+
 def _openai_tools() -> list[dict[str, Any]]:
-    tools = []
-    for t in CANONICAL_TOOLS:
-        tools.append(
-            {
-                "type": "function",
-                "function": {
-                    "name": t["name"],
-                    "description": t["description"],
-                    "parameters": t["parameters"],
-                },
-            }
-        )
-    return tools
+    return _registry_tools()
 
 
 def _xai_tools() -> list[dict[str, Any]]:
     # xAI Chat Completions is OpenAI-compatible for tools.
-    return _openai_tools()
+    return _registry_tools()
 
 
 # Evaluation-only keys never shown to acting models (V11 server-side binding).
@@ -217,7 +241,7 @@ class RealOpenAIAdapter:
             request_id=request_id,
             turn_number=turn_number,
             prompt_hash=_sha(system_prompt + user),
-            tool_schema_hash=TOOL_SCHEMA_HASH,
+            tool_schema_hash=_tool_schema_hash(),
             temperature=self.temperature,
             top_p=self.top_p,
             token_limit=self.token_limit,
@@ -409,7 +433,7 @@ class RealXAIAdapter:
             request_id=request_id,
             turn_number=turn_number,
             prompt_hash=_sha(system_prompt + user),
-            tool_schema_hash=TOOL_SCHEMA_HASH,
+            tool_schema_hash=_tool_schema_hash(),
             temperature=self.temperature,
             top_p=self.top_p,
             token_limit=self.token_limit,
