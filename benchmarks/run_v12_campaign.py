@@ -102,8 +102,16 @@ def main() -> None:
     ap.add_argument("--campaign-id", default="titan-v12-capture-complete")
     ap.add_argument("--repo", default="LoganVoss/TITAN")
     # Aliases used only for resolution probes before seal
-    ap.add_argument("--openai-model", default="gpt-4o")
-    ap.add_argument("--openai-reproduction-model", default="gpt-4o-mini")
+    ap.add_argument(
+        "--openai-model",
+        default="gpt-5.5",
+        help="OpenAI alias to resolve/freeze (default gpt-5.5 for Grok-4.3-class transfer)",
+    )
+    ap.add_argument(
+        "--openai-reproduction-model",
+        default="gpt-4o-mini",
+        help="Optional older reproduction slice only (not primary live)",
+    )
     ap.add_argument("--xai-model", default="grok-4.3")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--skip-push", action="store_true")
@@ -508,7 +516,11 @@ def main() -> None:
     ledger = CaptureLedger(campaign_id=args.campaign_id)
     session_plan: list[tuple[str, str]] = []
 
+    # Build per-provider lists, then INTERLEAVE so both APIs run concurrently
+    # (V12.1 fix: previous FIFO put all OpenAI first → Grok idle for half the run).
+    by_provider: dict[str, list[tuple[str, str]]] = {"openai": [], "xai": []}
     for prov_key, prov_name in (("openai", "provider-openai"), ("xai", "provider-xai")):
+        bucket = by_provider[prov_key]
         const_ids = build_constitutional_lane(
             store,
             n=n_const,
@@ -517,7 +529,7 @@ def main() -> None:
         )
         for sid in const_ids:
             ledger.create(sid, provider=prov_name, lane="constitutional")
-            session_plan.append((sid, prov_key))
+            bucket.append((sid, prov_key))
 
         half = n_adapt // 2
         gens = (
@@ -541,14 +553,14 @@ def main() -> None:
         )
         for sid in a1 + a2:
             ledger.create(sid, provider=prov_name, lane="adaptive", turns_planned=4)
-            session_plan.append((sid, prov_key))
+            bucket.append((sid, prov_key))
 
         chaos_ids = build_chaos_lane(
             store, n=n_chaos, provider=prov_name, seed=args.seed + 20
         )
         for sid in chaos_ids:
             ledger.create(sid, provider=prov_name, lane="chaos")
-            session_plan.append((sid, prov_key))
+            bucket.append((sid, prov_key))
 
         holdouts = build_holdout_specs(
             n=args.n_holdout_per_provider,
@@ -573,7 +585,7 @@ def main() -> None:
             ledger.create(
                 sid, provider=prov_name, lane="structural_holdout", turns_planned=4
             )
-            session_plan.append((sid, prov_key))
+            bucket.append((sid, prov_key))
 
         ben_ids = build_benign_constitutional(
             store,
@@ -583,7 +595,21 @@ def main() -> None:
         )
         for sid in ben_ids:
             ledger.create(sid, provider=prov_name, lane="constitutional_benign")
-            session_plan.append((sid, prov_key))
+            bucket.append((sid, prov_key))
+
+    session_plan = []
+    oa_q = list(by_provider["openai"])
+    xb_q = list(by_provider["xai"])
+    while oa_q or xb_q:
+        if oa_q:
+            session_plan.append(oa_q.pop(0))
+        if xb_q:
+            session_plan.append(xb_q.pop(0))
+    print(
+        f"  interleaved session_plan: {len(session_plan)} "
+        f"(openai={len(by_provider['openai'])}, xai={len(by_provider['xai'])})",
+        flush=True,
+    )
 
     sealed_path = out / "offline_manifest.sealed.json"
     sealed_sha = store.seal(sealed_path)

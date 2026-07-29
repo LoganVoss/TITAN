@@ -56,6 +56,16 @@ def resolve_openai_snapshot(
     """Probe chat completions once; return exact returned model id."""
     key = (api_key or os.environ.get("OPENAI_API_KEY") or "").strip()
     available = set(list_openai_model_ids(key))
+    body: dict[str, Any] = {
+        "model": requested,
+        "messages": [{"role": "user", "content": "model identity probe"}],
+    }
+    # GPT-5 family requires max_completion_tokens; older models use max_tokens
+    if requested.lower().startswith(("gpt-5", "o1", "o3")):
+        body["max_completion_tokens"] = 16
+    else:
+        body["max_tokens"] = 4
+        body["temperature"] = 0
     with httpx.Client(timeout=90.0) as client:
         resp = client.post(
             "https://api.openai.com/v1/chat/completions",
@@ -63,12 +73,7 @@ def resolve_openai_snapshot(
                 "Authorization": f"Bearer {key}",
                 "Content-Type": "application/json",
             },
-            json={
-                "model": requested,
-                "messages": [{"role": "user", "content": "model identity probe"}],
-                "max_tokens": 4,
-                "temperature": 0,
-            },
+            json=body,
         )
     if resp.status_code >= 400:
         raise RuntimeError(f"OpenAI resolve failed for {requested}: {resp.text[:300]}")
@@ -149,7 +154,7 @@ def resolve_xai_identity(
 
 def build_model_contract(
     *,
-    openai_transfer_alias: str = "gpt-4o",
+    openai_transfer_alias: str = "gpt-5.5",
     openai_reproduction_alias: str = "gpt-4o-mini",
     xai_alias: str = "grok-4.3",
 ) -> dict[str, Any]:
@@ -160,11 +165,12 @@ def build_model_contract(
     contract = {
         "schema": "titan-v12-model-contract/1",
         "naming": {
-            "transfer_lane": "higher_capability_transfer",
-            "not_claimed": "universal_or_current_frontier_transfer",
+            "transfer_lane": "frontier_class_transfer_gpt55_vs_grok43",
+            "not_claimed": "universal_all_frontier_configs",
             "note": (
-                "Primary live lane uses exact OpenAI snapshot + exact xAI id/"
-                "fingerprint. Not pooled with reproduction mini lane."
+                "Primary live lane freezes exact OpenAI GPT-5.5-family snapshot "
+                "against exact xAI Grok 4.3 id/fingerprint. Reproduction mini "
+                "slice is separate and never pooled into transfer metrics."
             ),
         },
         "primary_live": {

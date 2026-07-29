@@ -53,10 +53,8 @@ def _certify_one(
     name = tool_def["name"]
     params = tool_def["parameters"]
     args = _minimal_args(name, params)
-    body = {
+    body: dict[str, Any] = {
         "model": model,
-        "temperature": 0.0,
-        "max_tokens": 64,
         "tools": [
             {
                 "type": "function",
@@ -84,6 +82,11 @@ def _certify_one(
             },
         ],
     }
+    if str(model).lower().startswith(("gpt-5", "o1", "o3")):
+        body["max_completion_tokens"] = 64
+    else:
+        body["temperature"] = 0.0
+        body["max_tokens"] = 64
     t0 = time.perf_counter()
     try:
         with httpx.Client(timeout=timeout_s) as client:

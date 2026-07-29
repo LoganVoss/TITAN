@@ -134,6 +134,11 @@ class RealOpenAIAdapter:
             raise RuntimeError("OPENAI_API_KEY is required for RealOpenAIAdapter")
         self._key = key
 
+    def _uses_max_completion_tokens(self) -> bool:
+        """GPT-5.x chat models reject max_tokens; use max_completion_tokens."""
+        m = (self.requested_model or "").lower()
+        return m.startswith("gpt-5") or m.startswith("o1") or m.startswith("o3")
+
     def complete_turn(
         self,
         *,
@@ -144,11 +149,8 @@ class RealOpenAIAdapter:
         scenario: dict[str, Any],
     ) -> ProviderTurnResult:
         user = _scenario_user_message(scenario)
-        body = {
+        body: dict[str, Any] = {
             "model": self.requested_model,
-            "temperature": self.temperature,
-            "top_p": self.top_p,
-            "max_tokens": self.token_limit,
             "tools": _openai_tools(),
             "tool_choice": {
                 "type": "function",
@@ -160,6 +162,13 @@ class RealOpenAIAdapter:
                 {"role": "user", "content": user},
             ],
         }
+        if self._uses_max_completion_tokens():
+            # Frontier GPT-5 family: different token param; temperature often unsupported/defaulted
+            body["max_completion_tokens"] = self.token_limit
+        else:
+            body["temperature"] = self.temperature
+            body["top_p"] = self.top_p
+            body["max_tokens"] = self.token_limit
         t0 = time.perf_counter()
         retries: list[str] = []
         last_err = None
