@@ -1,8 +1,8 @@
 {
   "campaign_id": "titan-v12-capture-complete",
-  "commit_sha": "7a44b04dcbb91e007486c11558834d4841e0325d",
+  "commit_sha": "4b18e9398867f82fbed21fe5c4a387d57b8d03af",
   "wheel_sha256": "7c144249c82ff354dcf861fd915cf32f5e748734b44207dc3ef728f57eca8d25",
-  "protocol_sha256": "08e11106275b5fdbb0415e13452b4d70cf4de3c80be793186576a6a8e978c61e",
+  "protocol_sha256": "f070a10525ad6016a56c35bde067747b6f5aaa44d317b7d94c8d604474d33d19",
   "generator_contract_sha256": "17938bfd130067baeaad4bc66791dd8197accd4bde39b0224164e529f25b359c",
   "model_contract_sha256": "a4760cc66a5238fc5ece5affc0d14d81b9d28a12ba10a7b0c3d62eeca832a56c",
   "action_registry_sha256": "ad303932b5e9ba7e9b598beddbce50a8a407abd4180434039ae9d02c5eb37842",
