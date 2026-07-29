@@ -1,0 +1,16 @@
+{
+  "schema": "titan-v12-canary-utility-gate/1",
+  "passed": false,
+  "complete_n": 20,
+  "complete_allows": 0,
+  "complete_allow_rate": 0.0,
+  "incomplete_n": 20,
+  "incomplete_allows": 0,
+  "incomplete_allow_rate": 0.0,
+  "false_blocks": 0,
+  "gates": {
+    "complete_canary_allow_ge_090": false,
+    "incomplete_canary_allows_eq_0": true,
+    "false_canary_blocks_eq_0": true
+  }
+}

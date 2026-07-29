@@ -1,0 +1,62 @@
+{
+  "action_registry_sha256": "ad303932b5e9ba7e9b598beddbce50a8a407abd4180434039ae9d02c5eb37842",
+  "allocation": {
+    "adaptive_crossplay": 150,
+    "constitutional_harmful": 300,
+    "evidence_gateway_chaos": 50,
+    "structural_holdout": 50,
+    "total_harmful_including_holdout": 550
+  },
+  "campaign_id": "titan-v12-gpt55-grok43",
+  "created_at": "2026-07-29T21:07:19Z",
+  "generator_contract_sha256": "5f3e14e0bbaec8e152d886c0330ee9bdda39c8379a3ddff432edb1f790c710a3",
+  "governor": "titan-v10-dual-readiness-unchanged",
+  "independent_external_org_witness": false,
+  "model_contract": {
+    "naming": {
+      "not_claimed": "universal_all_frontier_configs",
+      "note": "Primary live lane freezes exact OpenAI GPT-5.5-family snapshot against exact xAI Grok 4.3 id/fingerprint. Reproduction mini slice is separate and never pooled into transfer metrics.",
+      "transfer_lane": "frontier_class_transfer_gpt55_vs_grok43"
+    },
+    "primary_live": {
+      "provider-openai": {
+        "frozen_model_id": "gpt-5.5-2026-04-23",
+        "requested_alias": "gpt-5.5",
+        "system_fingerprint": null
+      },
+      "provider-xai": {
+        "catalog_fingerprint": "fp_dec7a6a673",
+        "frozen_model_id": "grok-4.3",
+        "requested_alias": "grok-4.3",
+        "system_fingerprint": "fp_eb3c003fc66c14ed",
+        "version": "1.0"
+      }
+    },
+    "reproduction": {
+      "provider-openai": {
+        "frozen_model_id": "gpt-4o-mini-2024-07-18",
+        "requested_alias": "gpt-4o-mini"
+      },
+      "provider-xai": {
+        "frozen_model_id": "grok-4.3",
+        "requested_alias": "grok-4.3",
+        "system_fingerprint": "fp_eb3c003fc66c14ed"
+      }
+    }
+  },
+  "model_contract_sha256": "f0a1b256bc37eea7661b30c6d8b04e5851f968188c30cc5ac5a00f1a4d308dba",
+  "openai_schema_sha256": "39d7a5191ab7d12473b1b26ed76ec0a3d54784c024311094e8a704e3e80f84c2",
+  "protocol_sha256": "59d44745a5bcdd1d5e7ba255fce123bc6256856b5a18b0cc02d2a02806e6bc85",
+  "provider_certification_sha256": "3eee9569a0b80ab989c0a1193747a1f172c25bda072db395fc1c170119e18e97",
+  "repository": "LoganVoss/TITAN",
+  "require_independent_witness": true,
+  "require_provider_certification": true,
+  "schema": "titan-v12-protocol/1",
+  "source_commit": "3340fd58fb82ce1b8e091836ed908721467de278",
+  "titan_version": "1.2.0",
+  "tool_schema_sha256": "b0c45e4815f2f86fab5e96c34c8cf4fe4898ba47d4c8dff1e98598f37a29772f",
+  "wheel_sha256": "554dff935a061158c72eda0a0a649135e17709d7339ac23dccee330d19c68eb8",
+  "witness_mode_honest": "machine-enforced remote GitHub retrieval + Ed25519 key outside repo; operator-separated, NOT fully independent organization",
+  "witness_public_key_hex": "80e64414ea72b3975cff68ff7213c1aab365d4da7287a9d11e22d22cbfdc9ec3",
+  "xai_schema_sha256": "2db3b352c9fe0cf9be6b2581cf28a7dc85080406dd241defbcddead3fbf1d5a3"
+}

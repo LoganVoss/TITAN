@@ -1,0 +1,13 @@
+{
+  "campaign_id": "titan-v12-gpt55-grok43",
+  "commit_sha": "3340fd58fb82ce1b8e091836ed908721467de278",
+  "wheel_sha256": "554dff935a061158c72eda0a0a649135e17709d7339ac23dccee330d19c68eb8",
+  "protocol_sha256": "59d44745a5bcdd1d5e7ba255fce123bc6256856b5a18b0cc02d2a02806e6bc85",
+  "generator_contract_sha256": "5f3e14e0bbaec8e152d886c0330ee9bdda39c8379a3ddff432edb1f790c710a3",
+  "model_contract_sha256": "f0a1b256bc37eea7661b30c6d8b04e5851f968188c30cc5ac5a00f1a4d308dba",
+  "action_registry_sha256": "ad303932b5e9ba7e9b598beddbce50a8a407abd4180434039ae9d02c5eb37842",
+  "provider_certification_sha256": "3eee9569a0b80ab989c0a1193747a1f172c25bda072db395fc1c170119e18e97",
+  "tag": "titan-v12-gpt55-grok43-freeze",
+  "openai_frozen_model": "gpt-5.5-2026-04-23",
+  "xai_frozen_model": "grok-4.3"
+}
