@@ -2,6 +2,10 @@
 
 **Trajectory Inspection & Targeted Anomaly Network**
 
+<p align="center">
+  <img src="docs/assets/TITAN-GITHUB-LOGO.png" alt="TITAN logo" width="280" />
+</p>
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 TITAN is a **consequential-action control system** for AI agent safety. It
