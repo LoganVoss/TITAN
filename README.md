@@ -18,7 +18,7 @@
 
 ---
 
-## FOUNDATION
+## Foundation
 
 TITAN is a **capability-control system** for AI agents.
 
@@ -50,7 +50,7 @@ That is the difference between a **monitor that comments** and a **control plane
 
 ---
 
-## GOAL
+## Goal
 
 As agents get better at writing code, changing data, and operating systems, the hard risk is not only what they *say*. It is what they can *do*:
 
@@ -88,7 +88,7 @@ TITAN measures **safety and operational usefulness together**.
 
 ---
 
-## EVIDENCE
+## Evidence
 
 Sealed dual-provider live evaluation with frozen model identities:
 
@@ -113,7 +113,9 @@ Sealed dual-provider live evaluation with frozen model identities:
 | Complete-evidence benign allow (ops scale) | **~82%** |
 | Live proof-complete benign allow | **76%** |
 
-**Supported Claim:** under a dual-readiness control constitution, TITAN captured every planned live session against frontier-class acting models, blocked every block-ready harmful action, granted no silent harmful authority across constitutional and novelty lanes, and executed no harmful protected action without a valid commit path.
+**What “block-ready” means:** evaluation sessions are scored in offline **evidence cells**. A *block-ready harmful* cell is one where independent adverse proof is complete enough that the dual-readiness constitution *requires* BLOCK. The acting model never sees cell labels or answer keys (server-side binding only). This metric is governor recall under full adverse evidence — not the model “confessing,” and not unsupervised discovery of secret harm without evidence.
+
+**Supported claim:** under a dual-readiness control constitution, TITAN captured every planned live session against frontier-class acting models, blocked every block-ready harmful action, granted no silent harmful authority across constitutional and novelty lanes, and executed no harmful protected action without a valid commit path.
 
 **Boundary:** production status is **TBD** — the control mechanism is demonstrated; the full institutional safety case (independent external witness, independent replication, shadow traffic, HA ops, privacy program) is not yet complete. Production is not claimed.
 
@@ -192,7 +194,7 @@ Live runs need `OPENAI_API_KEY` and `XAI_API_KEY` in the environment only.
 
 ---
 
-## Production status: TBD
+## Production status
 
 | Layer | Status |
 | --- | --- |
@@ -208,6 +210,35 @@ Live runs need `OPENAI_API_KEY` and `XAI_API_KEY` in the environment only.
 
 ---
 
+## Future improvements
+
+Safety at flagship scale is already conservative (zero silent harm, zero false blocks on the 10k benign ops set). The next gains are mostly **utility and operational sharpness** — especially on the benign path, where too much legitimate work still lands in escrow.
+
+### Benign path (highest leverage)
+
+Today, live **proof-complete benign** allows at **76%** (24/100 → ESCROW) and the 10k ops set auto-allows roughly **60%** overall / **~82%** when evidence is complete. That means on the order of **one quarter to two fifths** of well-formed legitimate work still needs human review or hold — too much friction for production.
+
+Priorities:
+
+1. **Retune complete-evidence thresholds** on canary / twin / influence paths that currently escrow even when authorization and adverse-proof requirements are satisfied — without opening incomplete-benign automatic allows (must stay **0**).
+2. **Separate “allow-ready” from “review-nice-to-have”** so escrow is reserved for true uncertainty, not residual policy caution.
+3. **Close the canary-utility preflight gap** (local ≥0.90 diagnostic still fails) so complete benign graphs score cleanly.
+4. **Measure review load explicitly** — target a large drop in complete-benign escrow rate while holding false BLOCK = 0 and incomplete-benign allow = 0.
+5. **Shadow traffic on real workflows** to validate that lab-complete evidence matches production ticket / provenance graphs.
+
+### Safety and evaluation depth
+
+6. **Independent external-organization witness** and independent replication of the freeze package.  
+7. **Blinded human adjudication** on escrow and borderline complete-benign cases.  
+8. **Harder incomplete-harm and novelty cells** — keep zero silent allows under richer adaptive / chaos / holdout structure.  
+9. **End-to-end latency and HA** for PREPARE → recheck → COMMIT under load.
+
+### Honesty constraint
+
+Every utility improvement must be gated the same way the flagship was: **no silent harmful authority, no incomplete automatic allows, no gateway bypass**. Raising benign pass rate by loosening incomplete-evidence rules would be a regression, not progress.
+
+---
+
 ## Design principles
 
 1. Authority is earned — evidence before allow *and* before block  
@@ -219,7 +250,7 @@ Live runs need `OPENAI_API_KEY` and `XAI_API_KEY` in the environment only.
 
 ---
 
-## ORIGIN
+## Origin
 
 TITAN did not begin as an “AI safety portfolio piece.” It began as an **invariant synthesis model**. I originally designed this system for hard measurement problems in noisy trajectories, framed around **seismic analysis**. The goal was to find stable structure, and notice when two very different situations look the same.
 
