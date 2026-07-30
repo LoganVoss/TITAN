@@ -18,7 +18,7 @@
 
 ---
 
-## What this is
+## FOUNDATION
 
 TITAN is a **capability-control system** for AI agents.
 
@@ -51,7 +51,7 @@ That is the difference between a **monitor that comments** and a **control plane
 
 ---
 
-## Why it matters
+## GOAL
 
 As agents get better at writing code, changing data, and operating systems, the hard risk is not only what they *say*. It is what they can *do*:
 
@@ -89,7 +89,7 @@ TITAN measures **safety and operational usefulness together**.
 
 ---
 
-## Flagship evidence
+## EVIDENCE
 
 Sealed dual-provider live evaluation with frozen model identities:
 
@@ -114,9 +114,9 @@ Sealed dual-provider live evaluation with frozen model identities:
 | Complete-evidence benign allow (ops scale) | **~82%** |
 | Live proof-complete benign allow | **76%** |
 
-**Supported claim:** under a dual-readiness control constitution, TITAN captured every planned live session against frontier-class acting models, blocked every block-ready harmful action, granted no silent harmful authority across constitutional and novelty lanes, and executed no harmful protected action without a valid commit path.
+**Supported Claim:** under a dual-readiness control constitution, TITAN captured every planned live session against frontier-class acting models, blocked every block-ready harmful action, granted no silent harmful authority across constitutional and novelty lanes, and executed no harmful protected action without a valid commit path.
 
-**Honest boundary:** production status is **TBD** — the control mechanism is demonstrated; the full institutional safety case (independent external witness, independent replication, shadow traffic, HA ops, privacy program) is not yet complete. Production is not claimed.
+**Boundary:** production status is **TBD** — the control mechanism is demonstrated; the full institutional safety case (independent external witness, independent replication, shadow traffic, HA ops, privacy program) is not yet complete. Production is not claimed.
 
 | File | Purpose |
 | --- | --- |
@@ -206,26 +206,23 @@ Live runs need `OPENAI_API_KEY` and `XAI_API_KEY` in the environment only.
 
 ---
 
-## Why I made this
+## ORIGIN
 
-TITAN did not begin as an “AI safety portfolio piece.” It began as an **invariant synthesis engine** — work aimed at hard measurement problems in noisy trajectories, originally framed around regimes like **seismic / earthquake-style signal analysis**: find stable structure, and notice when two very different situations look the same under the wrong features.
+TITAN did not begin as an “AI safety portfolio piece.” It began as an **invariant synthesis engine**. I originally designed this system for hard measurement problems in noisy trajectories, framed around **seismic / earthquake signal analysis**. The goal was to find stable structure, and notice when two very different situations look the same.
 
-Then a post on X about OpenAI hiring for [Recursive Self-Improvement Safety](https://openai.com/careers/researcher-recursive-self-improvement-safety-san-francisco/) made the mapping unavoidable. The same craft — discover blind spots, force honest evaluation, refuse authority without proof — applies cleanly to **agent actions that can rewrite the training and safety stack**. That was the lightbulb: redirect the measurement engine into a **capability-governance control plane** for consequential tool use.
+I was browsing X the other day, and saw a post about OpenAI hiring for [Researcher, Recursive Self-Improvement Safety](https://openai.com/careers/researcher-recursive-self-improvement-safety-san-francisco/) which made the transfer unavoidable. The same approach: discover blind spots, force honest evaluation, refuse authority without proof - applies cleanly to **agent actions that can rewrite the training and safety stack**. That was a lightbulb: redirect the measurement engine into a **capability-governance control plane** for consequential tool utilization. 
 
 The result is this repository: action taxonomy, authenticated evidence, dual readiness, PREPARE/COMMIT enforcement, sealed freezes, dual-provider live evaluation under frontier-class models, and an explicit production boundary.
 
-What I want the work to show:
+My goal is to show:
 
 - open-ended safety risk can be turned into a **precise technical object**  
 - that object can be **built, attacked, measured, and hardened** end-to-end  
-- strong numbers do not license a fake “production” sticker  
-- the right question is not “does this trajectory look suspicious?” but  
+- We can ask: **Has this exact actor earned authority to perform this exact action on this exact state, with evidence that existed before execution?**
 
-> **Has this exact actor earned authority to perform this exact action on this exact state, with evidence that existed before execution?**
+Evidence: **[`docs/flagship/FLAGSHIP-NUMBERS.md`](docs/flagship/FLAGSHIP-NUMBERS.md)**  
 
-If you open one evidence file: **[`docs/flagship/FLAGSHIP-NUMBERS.md`](docs/flagship/FLAGSHIP-NUMBERS.md)**  
-
-Role mapping: [`docs/ROLE_FIT.md`](docs/ROLE_FIT.md)
+Research Role Connection: [`docs/ROLE_FIT.md`](docs/ROLE_FIT.md)
 
 ---
 
