@@ -264,7 +264,7 @@ My goal is to show:
 
 - open-ended safety risk can be turned into a **precise technical object**  
 - that object can be **built, attacked, measured, and hardened** end-to-end  
-- we can ask: **Has this exact actor earned authority to perform this exact action on this exact state, with evidence that existed before execution?**
+- we can determine whether a consequential action has earned execution authority **before it occurs**
 
 Evidence: **[`docs/flagship/FLAGSHIP-NUMBERS.md`](docs/flagship/FLAGSHIP-NUMBERS.md)**  
 
