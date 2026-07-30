@@ -1,6 +1,6 @@
 # TITAN × Recursive Self-Improvement Safety
 
-TITAN follows the same research process described by the **Recursive Self-Improvement Safety** role.
+TITAN follows a research process closely aligned with the **Recursive Self-Improvement Safety** role.
 
 The project began with a broad question:
 
