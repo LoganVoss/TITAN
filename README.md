@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/version-1.2.0-blue" alt="version" />
   <img src="https://img.shields.io/badge/flagship-V12-success" alt="flagship" />
   <img src="https://img.shields.io/badge/production-TBD-yellow" alt="production" />
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="license" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-red.svg" alt="license" /></a>
 </p>
 
 ---
