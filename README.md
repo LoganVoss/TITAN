@@ -252,9 +252,11 @@ Every utility improvement must be gated the same way the flagship was: **no sile
 
 ## Origin
 
-TITAN did not begin as an “AI safety portfolio piece.” It began as an **invariant synthesis model**. I originally designed this system for hard measurement problems in noisy trajectories, framed around **seismic analysis**. The goal was to find stable structure, and notice when two very different situations look the same.
+TITAN did not begin as an AI safety portfolio piece. It began as an **invariant synthesis model**. I originally designed this system for hard measurement problems in noisy trajectories, framed around **seismic analysis**. The goal was to find stable structure, and notice when two very different situations look the same.
 
 I was browsing X the other day, and saw a post about OpenAI hiring for [Researcher, Recursive Self-Improvement Safety](https://openai.com/careers/researcher-recursive-self-improvement-safety-san-francisco/) which made the transfer unavoidable. The same approach: discover blind spots, force honest evaluation, refuse authority without proof - applies cleanly to **agent actions that can rewrite the training and safety stack**. Lightbulb moment: redirect the measurement engine into a **capability-governance control plane** for consequential tool utilization. 
+
+Research Role Connection: [`docs/ROLE_FIT.md`](docs/ROLE_FIT.md)
 
 The result is this repository: action taxonomy, authenticated evidence, dual readiness, PREPARE/COMMIT enforcement, sealed freezes, dual-provider live evaluation under frontier-class models, and an explicit production boundary. I am fairly new to using GitHub, so please ignore my failed runs. Early CI was misconfigured for the live HTTP stack; unit tests are green now. Flagship numbers and the freeze receipt are separate artifacts. Cite those, not the Actions history, Lol.
 
@@ -265,8 +267,6 @@ My goal is to show:
 - we can ask: **Has this exact actor earned authority to perform this exact action on this exact state, with evidence that existed before execution?**
 
 Evidence: **[`docs/flagship/FLAGSHIP-NUMBERS.md`](docs/flagship/FLAGSHIP-NUMBERS.md)**  
-
-Research Role Connection: [`docs/ROLE_FIT.md`](docs/ROLE_FIT.md)
 
 ---
 
