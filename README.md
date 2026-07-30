@@ -22,8 +22,7 @@
 
 TITAN is a **capability-control system** for AI agents.
 
-It does **not** wait until a conversation ends and then guess whether something “looked bad.”  
-It intervenes at the moment an agent tries to change something that matters — training data, evaluation canaries, safeguards, credentials, infrastructure.
+TITAN intervenes the moment an agent tries to change something that matters — training data, evaluation canaries, safeguards, credentials, or infrastructure. 
 
 The question it answers:
 
@@ -222,17 +221,17 @@ Live runs need `OPENAI_API_KEY` and `XAI_API_KEY` in the environment only.
 
 ## ORIGIN
 
-TITAN did not begin as an “AI safety portfolio piece.” It began as an **invariant synthesis engine**. I originally designed this system for hard measurement problems in noisy trajectories, framed around **seismic / earthquake signal analysis**. The goal was to find stable structure, and notice when two very different situations look the same.
+TITAN did not begin as an “AI safety portfolio piece.” It began as an **invariant synthesis model**. I originally designed this system for hard measurement problems in noisy trajectories, framed around **seismic analysis**. The goal was to find stable structure, and notice when two very different situations look the same.
 
-I was browsing X the other day, and saw a post about OpenAI hiring for [Researcher, Recursive Self-Improvement Safety](https://openai.com/careers/researcher-recursive-self-improvement-safety-san-francisco/) which made the transfer unavoidable. The same approach: discover blind spots, force honest evaluation, refuse authority without proof - applies cleanly to **agent actions that can rewrite the training and safety stack**. That was a lightbulb: redirect the measurement engine into a **capability-governance control plane** for consequential tool utilization. 
+I was browsing X the other day, and saw a post about OpenAI hiring for [Researcher, Recursive Self-Improvement Safety](https://openai.com/careers/researcher-recursive-self-improvement-safety-san-francisco/) which made the transfer unavoidable. The same approach: discover blind spots, force honest evaluation, refuse authority without proof - applies cleanly to **agent actions that can rewrite the training and safety stack**. Lightbulb moment: redirect the measurement engine into a **capability-governance control plane** for consequential tool utilization. 
 
-The result is this repository: action taxonomy, authenticated evidence, dual readiness, PREPARE/COMMIT enforcement, sealed freezes, dual-provider live evaluation under frontier-class models, and an explicit production boundary.
+The result is this repository: action taxonomy, authenticated evidence, dual readiness, PREPARE/COMMIT enforcement, sealed freezes, dual-provider live evaluation under frontier-class models, and an explicit production boundary. I am fairly new to using GitHub, so please ignore my failed runs. Early CI was misconfigured for the live HTTP stack; unit tests are green now. Flagship numbers and the freeze receipt are separate artifacts. Cite those, not the Actions history, Lol.
 
 My goal is to show:
 
 - open-ended safety risk can be turned into a **precise technical object**  
 - that object can be **built, attacked, measured, and hardened** end-to-end  
-- We can ask: **Has this exact actor earned authority to perform this exact action on this exact state, with evidence that existed before execution?**
+- we can ask: **Has this exact actor earned authority to perform this exact action on this exact state, with evidence that existed before execution?**
 
 Evidence: **[`docs/flagship/FLAGSHIP-NUMBERS.md`](docs/flagship/FLAGSHIP-NUMBERS.md)**  
 
