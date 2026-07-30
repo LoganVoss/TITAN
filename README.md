@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/LoganVoss/TITAN/actions/workflows/ci.yml"><img src="https://github.com/LoganVoss/TITAN/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <img src="https://img.shields.io/badge/version-1.2.0-blue" alt="version" />
   <img src="https://img.shields.io/badge/flagship-V12-success" alt="flagship" />
   <img src="https://img.shields.io/badge/production-TBD-yellow" alt="production" />
@@ -145,14 +146,27 @@ event stream → proposal → evidence → dual readiness → disposition
 ## Repository layout
 
 ```text
-README.md              product narrative
-src/titan/             control-plane implementation
-tests/                 automated tests
-benchmarks/            flagship runner + sealed campaign outputs
-docs/flagship/         human-readable evidence pack
-results/flagship/      immutable machine copy of results
-examples/              small offline demos
+.
+├── README.md                 Product narrative (start here)
+├── LICENSE                   Apache-2.0
+├── pyproject.toml            Package metadata + tooling
+├── requirements.txt          Core + live HTTP deps
+├── requirements-dev.lock     Pinned CI/dev environment
+│
+├── src/titan/                Control-plane implementation
+├── tests/                    Automated test suite (pytest)
+├── examples/                 Small offline demos (no API keys)
+│
+├── benchmarks/               Flagship campaign runner
+│   └── campaigns/…           Sealed dual-provider campaign outputs
+├── results/flagship/         Immutable machine-readable artifacts
+└── docs/
+    ├── assets/               Logo and media
+    ├── flagship/             Human-readable evidence pack
+    └── ROLE_FIT.md           Research / role mapping
 ```
+
+Python packaging convention: lowercase top-level dirs (`src`, `tests`, `docs`).
 
 ---
 
@@ -162,8 +176,9 @@ examples/              small offline demos
 git clone https://github.com/LoganVoss/TITAN.git
 cd TITAN
 python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-pytest tests/ -q
+pip install -e ".[dev]"          # tests + httpx
+# or:  pip install -e ".[live]"  # live HTTP only
+pytest -q
 python benchmarks/run_v12_campaign.py    # offline transport gate
 ```
 

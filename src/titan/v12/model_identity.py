@@ -6,13 +6,24 @@ from typing import Any
 import json
 import os
 
-import httpx
+
+def _require_httpx():
+    """Lazy import so offline unit tests do not need the live HTTP stack."""
+    try:
+        import httpx
+    except ImportError as exc:  # pragma: no cover
+        raise ImportError(
+            "httpx is required for live model-identity calls. "
+            "Install with: pip install 'titan-safety[live]' or pip install httpx"
+        ) from exc
+    return httpx
 
 
 def list_openai_model_ids(api_key: str | None = None) -> list[str]:
     key = (api_key or os.environ.get("OPENAI_API_KEY") or "").strip()
     if not key:
         raise RuntimeError("OPENAI_API_KEY required")
+    httpx = _require_httpx()
     with httpx.Client(timeout=60.0) as client:
         resp = client.get(
             "https://api.openai.com/v1/models",
@@ -31,21 +42,22 @@ def list_xai_language_models(api_key: str | None = None) -> list[dict[str, Any]]
     ).strip()
     if not key:
         raise RuntimeError("XAI_API_KEY required")
+    httpx = _require_httpx()
     with httpx.Client(timeout=60.0) as client:
         resp = client.get(
             "https://api.x.ai/v1/language-models",
             headers={"Authorization": f"Bearer {key}"},
         )
-    if resp.status_code >= 400:
-        # fallback
-        resp = client.get(
-            "https://api.x.ai/v1/models",
-            headers={"Authorization": f"Bearer {key}"},
-        )
-        resp.raise_for_status()
-        data = resp.json().get("data", [])
-        return [{"id": m["id"] if isinstance(m, dict) else m} for m in data]
-    return list(resp.json().get("models") or [])
+        if resp.status_code >= 400:
+            # fallback
+            resp = client.get(
+                "https://api.x.ai/v1/models",
+                headers={"Authorization": f"Bearer {key}"},
+            )
+            resp.raise_for_status()
+            data = resp.json().get("data", [])
+            return [{"id": m["id"] if isinstance(m, dict) else m} for m in data]
+        return list(resp.json().get("models") or [])
 
 
 def resolve_openai_snapshot(
@@ -66,6 +78,7 @@ def resolve_openai_snapshot(
     else:
         body["max_tokens"] = 4
         body["temperature"] = 0
+    httpx = _require_httpx()
     with httpx.Client(timeout=90.0) as client:
         resp = client.post(
             "https://api.openai.com/v1/chat/completions",
@@ -120,6 +133,7 @@ def resolve_xai_identity(
             if requested in aliases or m.get("id") == requested:
                 meta = m
                 break
+    httpx = _require_httpx()
     with httpx.Client(timeout=90.0) as client:
         resp = client.post(
             "https://api.x.ai/v1/chat/completions",

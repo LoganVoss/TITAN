@@ -1,8 +1,14 @@
 # Development/test environment pins for deterministic CI resolution.
 # Production release artifacts still require platform-specific hashes, an SBOM,
 # and a signed container/image digest.
+anyio==4.9.0
+certifi==2025.7.14
 coverage==7.10.7
 exceptiongroup==1.3.1; python_version < "3.11"
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.10
 iniconfig==2.1.0
 numpy==2.0.2
 packaging==26.2
@@ -10,5 +16,6 @@ pluggy==1.6.0
 Pygments==2.20.0
 pytest==8.4.2
 pytest-cov==7.1.0
+sniffio==1.3.1
 tomli==2.4.1; python_version < "3.11"
 typing_extensions==4.16.0

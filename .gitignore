@@ -1,23 +1,38 @@
+# Virtual environments
 .venv/
+venv/
+.env/
+.env.*
+
+# Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.egg-info/
 .eggs/
 dist/
 build/
+*.egg
+
+# Test / coverage
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
 .mypy_cache/
 .ruff_cache/
-*.json
-!pyproject.toml
-.DS_Store
-benchmarks/last_results.json
+.tox/
+.nox/
 
-# secrets / credentials — never commit
-.env
-.env.*
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Secrets — never commit
 *.pem
 *.key
 .secrets/
@@ -25,8 +40,13 @@ secrets/
 **/credentials.json
 **/*api*key*
 **/*secret*
-# local runtime noise
-.coverage
-.DS_Store
-.coverage
+
+# Local runtime noise
 **/run.log
+benchmarks/last_results.json
+
+# Generated JSON outside sealed result trees (tracked campaign/results JSON stay force-added)
+*.json
+!benchmarks/**/*.json
+!results/**/*.json
+!pyproject.toml

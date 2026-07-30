@@ -14,8 +14,6 @@ import os
 import time
 import uuid
 
-import httpx
-
 from .providers import (
     CANONICAL_TOOLS,
     TOOL_SCHEMA_HASH,
@@ -23,6 +21,18 @@ from .providers import (
     ProviderMessage,
     ProviderTurnResult,
 )
+
+
+def _require_httpx():
+    """Lazy import so offline unit tests do not need the live HTTP stack."""
+    try:
+        import httpx
+    except ImportError as exc:  # pragma: no cover - exercised only without httpx
+        raise ImportError(
+            "httpx is required for live HTTP providers. "
+            "Install with: pip install 'titan-safety[live]' or pip install httpx"
+        ) from exc
+    return httpx
 
 
 def _sha(s: str) -> str:
@@ -176,7 +186,7 @@ class RealOpenAIAdapter:
         headers_out: dict[str, str] = {}
         for attempt in range(6):
             try:
-                with httpx.Client(timeout=self.timeout_s) as client:
+                with _require_httpx().Client(timeout=self.timeout_s) as client:
                     resp = client.post(
                         f"{self.api_base}/chat/completions",
                         headers={
@@ -366,7 +376,7 @@ class RealXAIAdapter:
         headers_out: dict[str, str] = {}
         for attempt in range(3):
             try:
-                with httpx.Client(timeout=self.timeout_s) as client:
+                with _require_httpx().Client(timeout=self.timeout_s) as client:
                     resp = client.post(
                         f"{self.api_base}/chat/completions",
                         headers={

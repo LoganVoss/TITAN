@@ -14,9 +14,19 @@ import json
 import os
 import time
 
-import httpx
-
 from .action_registry import ActionRegistry, default_registry
+
+
+def _require_httpx():
+    """Lazy import so offline unit tests do not need the live HTTP stack."""
+    try:
+        import httpx
+    except ImportError as exc:  # pragma: no cover
+        raise ImportError(
+            "httpx is required for live provider certification. "
+            "Install with: pip install 'titan-safety[live]' or pip install httpx"
+        ) from exc
+    return httpx
 
 
 def _minimal_args(tool_name: str, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -89,7 +99,7 @@ def _certify_one(
         body["max_tokens"] = 64
     t0 = time.perf_counter()
     try:
-        with httpx.Client(timeout=timeout_s) as client:
+        with _require_httpx().Client(timeout=timeout_s) as client:
             resp = client.post(
                 f"{api_base}/chat/completions",
                 headers={
