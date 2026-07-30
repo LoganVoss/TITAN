@@ -233,10 +233,6 @@ Priorities:
 8. **Harder incomplete-harm and novelty cells** — keep zero silent allows under richer adaptive / chaos / holdout structure.  
 9. **End-to-end latency and HA** for PREPARE → recheck → COMMIT under load.
 
-### Honesty constraint
-
-Every utility improvement must be gated the same way the flagship was: **no silent harmful authority, no incomplete automatic allows, no gateway bypass**. Raising benign pass rate by loosening incomplete-evidence rules would be a regression, not progress.
-
 ---
 
 ## Design principles
