@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/LoganVoss/TITAN/actions/workflows/ci.yml"><img src="https://github.com/LoganVoss/TITAN/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/LoganVoss/TITAN/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/LoganVoss/TITAN/ci.yml?branch=main&label=CI&logo=github" alt="CI" /></a>
   <img src="https://img.shields.io/badge/version-1.2.0-blue" alt="version" />
   <img src="https://img.shields.io/badge/flagship-V12-success" alt="flagship" />
   <img src="https://img.shields.io/badge/production-TBD-yellow" alt="production" />
