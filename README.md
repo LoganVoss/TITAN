@@ -143,6 +143,20 @@ event stream → proposal → evidence → dual readiness → disposition
 
 ---
 
+## POSEIDON attachment
+
+TITAN includes a **TITAN-owned, shadow-only attachment** for
+[POSEIDON](docs/POSEIDON.md). It verifies POSEIDON's signed package and runtime
+attestation, projects the exact pre-action trace prefix, binds the result to the
+proposed action, state snapshot, actor, and environment, then emits native
+`poseidon_observation` evidence.
+
+The boundary is strict: this evidence **cannot satisfy readiness, authorize an
+action, change ALLOW/BLOCK/ESCROW, or mint PREPARE/COMMIT**. Any decision-bearing
+mapping is future work and requires separate review.
+
+---
+
 ## Repository layout
 
 ```text
@@ -154,6 +168,7 @@ event stream → proposal → evidence → dual readiness → disposition
 ├── requirements-dev.lock     Pinned CI/dev environment
 │
 ├── src/titan/                Control-plane implementation
+│   └── integrations/         Optional signed-artifact attachments
 ├── tests/                    Automated test suite (pytest)
 ├── examples/                 Small offline demos (no API keys)
 │
@@ -163,6 +178,7 @@ event stream → proposal → evidence → dual readiness → disposition
 └── docs/
     ├── assets/               Logo and media
     ├── flagship/             Human-readable evidence pack
+    ├── POSEIDON.md           Shadow-only attachment boundary
     └── ROLE_FIT.md           Research / role mapping
 ```
 
