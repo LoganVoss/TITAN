@@ -18,6 +18,15 @@
 
 ---
 
+## Start here
+
+- **Try it locally:** [Install and run offline](#install).
+- **Review the evidence:** [Flagship numbers](docs/flagship/FLAGSHIP-NUMBERS.md) and [full report](docs/flagship/Attack-Vector-Results-V12-Flagship.md).
+- **Understand the boundary:** [Production status](#production-status) and the [shadow-only POSEIDON attachment](docs/POSEIDON.md).
+- **Explore the code:** [Repository layout](#repository-layout) and [offline examples](examples/README.md).
+
+---
+
 ## Foundation
 
 TITAN is a **capability-control system** for AI agents.
@@ -188,15 +197,47 @@ Python packaging convention: lowercase top-level dirs (`src`, `tests`, `docs`).
 
 ## Install
 
+**Requirements:** Git and Python **3.9 or newer**. CI covers Python 3.9–3.12. Run the commands below from the repository root.
+
+### Set up a local environment
+
 ```bash
 git clone https://github.com/LoganVoss/TITAN.git
 cd TITAN
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"          # tests + httpx
-# or:  pip install -e ".[live]"  # live HTTP only
-pytest -q
-python benchmarks/run_v12_campaign.py    # offline transport gate
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
 ```
+
+On Windows PowerShell, use `python -m venv .venv` and `.venv\Scripts\Activate.ps1` instead of the two environment commands above.
+
+The `dev` extra includes the test tools, HTTP client, and POSEIDON signature-verification dependency. To use the pinned dependencies from CI, replace the last command with:
+
+```bash
+python -m pip install -r requirements-dev.lock
+python -m pip install -e . --no-deps
+```
+
+### Run offline
+
+These checks and examples do not require API keys:
+
+```bash
+python -m pytest
+python examples/quickstart.py
+```
+
+For more demos, see [examples/README.md](examples/README.md).
+
+To run the offline V12 transport gate:
+
+```bash
+python benchmarks/run_v12_campaign.py
+```
+
+The runner first executes the test suite, then writes generated schemas and `freeze_gate_report.json` under `benchmarks/campaigns/titan-v12-capture-complete/`. This checks transport closure locally; it does not rerun the live flagship evaluation.
+
+You can also inspect the action registry directly:
 
 ```python
 from titan.v12 import default_registry, assert_transport_closure
@@ -206,7 +247,11 @@ assert reg.canonicalize("schedule_refresh") == "queue_training"
 assert_transport_closure(require_provider_cert=False)
 ```
 
-Live runs need `OPENAI_API_KEY` and `XAI_API_KEY` in the environment only.
+### Live evaluation
+
+Live provider support is available separately with `python -m pip install -e ".[live]"`; that extra does not install the test suite. The development setup above already includes the HTTP client.
+
+Live campaigns require `OPENAI_API_KEY` and `XAI_API_KEY` in the environment only. Never commit keys. Review [the campaign runner](benchmarks/run_v12_campaign.py) before using `--live`: that path calls external providers and can create commits, tags, and pushes as part of its freeze procedure. It is not part of the offline quickstart.
 
 ---
 
